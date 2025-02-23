@@ -1,0 +1,12 @@
+aiogram
+aiohttp
+python-dotenv
+SQLAlchemy
+greenlet
+aiosqlite
+SQLAlchemy-Utils
+pandas
+email_validator
+aiosmtplib
+openpyxl
+babel

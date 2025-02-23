@@ -1,0 +1,353 @@
+# Translations template for isacbot.
+# Copyright (C) 2025 Vladislav Anisimov
+# This file is distributed under the same license as the isacbot project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: isacbot 1.0.0\n"
+"Report-Msgid-Bugs-To: pan.vlados.w@gmail.com\n"
+"POT-Creation-Date: 2025-02-23 04:03+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: src/isacbot/__main__.py:57
+#, python-brace-format
+msgid "{name} запущен🥳"
+msgstr ""
+
+#: src/isacbot/__main__.py:66
+#, python-brace-format
+msgid "{name} остановлен😔"
+msgstr ""
+
+#: src/isacbot/callbacks.py:9
+msgid "Старт 🚀"
+msgstr ""
+
+#: src/isacbot/callbacks.py:10
+msgid "📊 [Создать опрос]"
+msgstr ""
+
+#: src/isacbot/callbacks.py:11
+msgid "📨 [Отправить результат опроса]"
+msgstr ""
+
+#: src/isacbot/callbacks.py:12
+msgid "⚙️ Настройки"
+msgstr ""
+
+#: src/isacbot/callbacks.py:13
+msgid "❓ Помощь"
+msgstr ""
+
+#: src/isacbot/callbacks.py:17
+msgid "🔒 Взять ДК"
+msgstr ""
+
+#: src/isacbot/callbacks.py:18
+msgid "🔓 Отпустить ДК"
+msgstr ""
+
+#: src/isacbot/callbacks.py:19
+msgid "↩️ Встать в очередь ДК"
+msgstr ""
+
+#: src/isacbot/callbacks.py:23
+msgid "🔙 Назад"
+msgstr ""
+
+#: src/isacbot/callbacks.py:27
+msgid "👤 [Изменить имя]"
+msgstr ""
+
+#: src/isacbot/callbacks.py:28
+msgid "📧 [Изменить email]"
+msgstr ""
+
+#: src/isacbot/commands.py:48
+msgid "🛣️ [Дорожная карта]"
+msgstr ""
+
+#: src/isacbot/commands.py:57
+msgid "Показать администраторов"
+msgstr ""
+
+#: src/isacbot/commands.py:67
+msgid "Обновить администраторов"
+msgstr ""
+
+#: src/isacbot/keyboards.py:76
+msgid "Воспользуйся меню👇"
+msgstr ""
+
+#: src/isacbot/keyboards.py:125
+msgid "Выберите статус☝️"
+msgstr ""
+
+#: src/isacbot/keyboards.py:147
+msgid "Выберите действие 👇"
+msgstr ""
+
+#: src/isacbot/database/utils.py:22
+msgid "Удаленно"
+msgstr ""
+
+#: src/isacbot/database/utils.py:23
+msgid "В офисе"
+msgstr ""
+
+#: src/isacbot/database/utils.py:24
+msgid "На больничном"
+msgstr ""
+
+#: src/isacbot/database/utils.py:25
+msgid "В отпуске"
+msgstr ""
+
+#: src/isacbot/database/utils.py:26
+msgid "Отсутствую по уважительной причине"
+msgstr ""
+
+#: src/isacbot/database/utils.py:27
+msgid "Неизвестно"
+msgstr ""
+
+#: src/isacbot/handlers/admin.py:75
+#, python-brace-format
+msgid "Бот {full_name} был повышен до Администратора в чате {chat_full_name}!"
+msgstr ""
+
+#: src/isacbot/handlers/admin.py:80
+#, python-brace-format
+msgid "Бот {full_name} был понижен до обычного юзера в чате {chat_full_name}!"
+msgstr ""
+
+#: src/isacbot/handlers/admin.py:84
+#, python-brace-format
+msgid ""
+"Пользователь {full_name} был(а) повышен(а) до Администратора в чате "
+"{chat_full_name}!"
+msgstr ""
+
+#: src/isacbot/handlers/admin.py:88
+#, python-brace-format
+msgid ""
+"Пользователь {full_name} был(а) понижен(а) до обычного юзера в чате "
+"{chat_full_name}!"
+msgstr ""
+
+#: src/isacbot/handlers/admin.py:134
+#, python-brace-format
+msgid ""
+"Пользователи:\n"
+"\t{users_info}\n"
+"загружены как Администраторы в чате {chat_full_name}."
+msgstr ""
+
+#: src/isacbot/handlers/group.py:24
+#, python-brace-format
+msgid "Добро пожаловать, {full_name}! 🫡"
+msgstr ""
+
+#: src/isacbot/handlers/poll.py:71
+#, python-brace-format
+msgid "💻 Где Вы сегодня {poll_date}?"
+msgstr ""
+
+#: src/isacbot/handlers/road_map.py:115
+#, python-brace-format
+msgid "Состояние дорожной карты: {rml_status}"
+msgstr ""
+
+#: src/isacbot/handlers/road_map.py:117
+msgid "🔒 Заблокирована"
+msgstr ""
+
+#: src/isacbot/handlers/road_map.py:117
+msgid "🔓 Разблокирована"
+msgstr ""
+
+#: src/isacbot/handlers/road_map.py:133
+#, python-brace-format
+msgid "⚠️ ДК уже предоставлена Вам {full_name}."
+msgstr ""
+
+#: src/isacbot/handlers/road_map.py:137
+#, python-brace-format
+msgid "⛔ ДК заблокирована пользователем {full_name}."
+msgstr ""
+
+#: src/isacbot/handlers/road_map.py:141
+#, python-brace-format
+msgid "✅ ДК предоставлена пользователю, {full_name}."
+msgstr ""
+
+#: src/isacbot/handlers/road_map.py:165
+msgid "⚠️ Вы уже находитесь в очереди ожидания."
+msgstr ""
+
+#: src/isacbot/handlers/road_map.py:168
+#, python-brace-format
+msgid "⚠️ ДК уже заблокирована Вами {full_name}."
+msgstr ""
+
+#: src/isacbot/handlers/road_map.py:175
+#, python-brace-format
+msgid "⏰ Пользователь {full_name} встал в очередь ДК."
+msgstr ""
+
+#: src/isacbot/handlers/road_map.py:197
+msgid "⛔ Вы не можете разблокировать ДК заблокированную другим пользователем."
+msgstr ""
+
+#: src/isacbot/handlers/road_map.py:211
+msgid "🆓 ДК разблокирована."
+msgstr ""
+
+#: src/isacbot/handlers/settings.py:59
+msgid "⚙️ <b>Выберите доступные настройки:</b>"
+msgstr ""
+
+#: src/isacbot/handlers/settings.py:87
+#, python-brace-format
+msgid ""
+"Ваше имя {displayname}. Для изменения напишите новое имя в сообщении ниже"
+" 📝👇"
+msgstr ""
+
+#: src/isacbot/handlers/settings.py:90
+msgid "Имя не установлено. Напишите новое имя в сообщении ниже 👇"
+msgstr ""
+
+#: src/isacbot/handlers/settings.py:95
+#, python-brace-format
+msgid "Ваш email {email}. Для изменения напишите новый email в сообщении ниже 📝👇"
+msgstr ""
+
+#: src/isacbot/handlers/settings.py:98
+msgid "Email не установлен. Напишите новый email в сообщении ниже 📝👇"
+msgstr ""
+
+#: src/isacbot/handlers/settings.py:129
+#, python-brace-format
+msgid "✨ Ваш новый email {text} успешно зарегистрирован."
+msgstr ""
+
+#: src/isacbot/handlers/settings.py:133
+#, python-brace-format
+msgid ""
+"❌ Ошибка при попытке зарегистрировать email: {text}. Укажите корректный "
+"адрес электронной почты."
+msgstr ""
+
+#: src/isacbot/handlers/settings.py:136
+#, python-brace-format
+msgid "✨ Ваше новое имя {text} успешно зарегистрировано."
+msgstr ""
+
+#: src/isacbot/handlers/settings.py:140
+#, python-brace-format
+msgid ""
+"❌ Ошибка при попытке зарегистрировать имя: {text}. Превышено допустимое "
+"количество символов, введите другое значение."
+msgstr ""
+
+#: src/isacbot/handlers/start.py:70
+msgid "Добрый день, пользователь! Выберите необходимое действие:"
+msgstr ""
+
+#: src/isacbot/handlers/start.py:72
+#, python-brace-format
+msgid "Добрый день, {full_name}! Выберите необходимое действие:"
+msgstr ""
+
+#: src/isacbot/handlers/start.py:98
+msgid "Что то пошло не так... ☹️"
+msgstr ""
+
+#: src/isacbot/handlers/start.py:113
+msgid "Опросы не найдены."
+msgstr ""
+
+#: src/isacbot/handlers/start.py:123
+msgid "📆 Выберите дату опроса:"
+msgstr ""
+
+#: src/isacbot/handlers/start.py:142
+#, python-brace-format
+msgid ""
+"⚠️ Уважаемый(ая) {full_name}, для регистрации воспользуйтесь командой "
+"{action}."
+msgstr ""
+
+#: src/isacbot/handlers/start.py:150
+#, python-brace-format
+msgid "⚠️ Необходимо указать почтовый адрес в команде {sequence_of_actions}"
+msgstr ""
+
+#: src/isacbot/handlers/start.py:164
+msgid "⚠️ Ответы на опрос отсутствуют в базе данных."
+msgstr ""
+
+#: src/isacbot/handlers/start.py:171
+#, python-brace-format
+msgid "Результат опроса на дату {date}"
+msgstr ""
+
+#: src/isacbot/handlers/start.py:176
+msgid "❌ Ошибка при создании сообщения."
+msgstr ""
+
+#: src/isacbot/handlers/start.py:188
+msgid "❌ Ошибка при отправке сообщения."
+msgstr ""
+
+#: src/isacbot/handlers/start.py:194
+#, python-brace-format
+msgid "✅ Результат опроса успешно отправлен на почтовый адрес {email}."
+msgstr ""
+
+#: src/isacbot/handlers/start.py:233
+msgid ""
+"🤖 This bot allows you to:\n"
+"\n"
+"1️⃣ create and receive a poll about the presence of an employee on "
+"Mondays;\n"
+"2️⃣ send the results of a poll to the mailbox;\n"
+"3️⃣ register the user’s name and email;\n"
+"4️⃣ participate in blocking/unblocking the roadmap (a work file filled "
+"out according to the activities of the department)."
+msgstr ""
+
+#: src/isacbot/middlewares/poll.py:66
+#, python-brace-format
+msgid ""
+"⚠️ Неправильный формат команды. Пример:\n"
+"/{command} <time in ISO 8601 format>\n"
+"\n"
+"Установлено стандартное время закрытия опроса через {default_close_time}."
+msgstr ""
+
+#: src/isacbot/middlewares/poll.py:98
+#, python-brace-format
+msgid "⚠️ Опрос на дату {poll_date} уже сформирован."
+msgstr ""
+
+#: src/isacbot/middlewares/poll.py:105
+msgid "⚠️ Опрос выполняется только по понедельникам."
+msgstr ""
+
+#: src/isacbot/middlewares/poll.py:182
+#, python-brace-format
+msgid ""
+"⚠️ Уважаемый(ая) {full_name}, для регистрации воспользуйтесь командой "
+"{command} в приватном чате со мной."
+msgstr ""
+

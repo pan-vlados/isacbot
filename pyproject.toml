@@ -1,0 +1,88 @@
+[build-system]
+requires = ["setuptools >= 75.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "isacbot"
+version = "1.0.0"
+authors = [
+  {name = "Anisimov Vladislav", email = "pan.vlados.w@gmail.com" },
+]
+description = ""
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.12.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+]
+dynamic = ["dependencies", "optional-dependencies"]
+
+[project.urls]
+# repository = ""
+
+[tool.setuptools.dynamic]
+# Here can be requirements.in, but we prefer to use hashed and compiled
+# requirements.txt file than just depend on packages version due to security reason.
+dependencies = {file = ["requirements.txt"]}
+optional-dependencies.dev = {file = ["requirements-dev.txt"]}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pip-tools]
+generate-hashes = true
+
+[tool.ruff]
+respect-gitignore = true
+fix = false
+unsafe-fixes = false
+output-format = "full"
+line-length = 100
+indent-width = 4
+cache-dir = "/tmp/ruff-cache"
+
+[tool.ruff.format]
+docstring-code-format = true
+docstring-code-line-length = 100
+quote-style = "single"
+indent-style = "space"
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = ["D1", "D203", "D213", "FA102", "TRY003", "EM",
+"TD002",  # Missing author in TODO
+"TD003",  # Missing issue link on the line following this TODO
+"PGH003",  # Use specific rule codes when ignoring type issues
+"FIX002",  # Line contains TODO, consider resolving the issue
+"UP031",  # Use format specifiers instead of percent format like %s
+"G002",  # Logging statement uses `%`
+"RUF003",  # Checks for ambiguous Unicode characters in comments.
+"COM812",  # Checks for the absence of trailing commas. Here due to conflicts with the formatter.
+"ISC001",  # Checks for implicitly concatenated strings on a single line. Here due to conflicts with the formatter.
+"RUF001",  # string cintains non ascii cyrillic letter
+"D205",  # 1 blank line required between summary line and description
+"ANN401",  # Dynamically typed expressions (typing.Any) are disallowed in `default`
+"E501",  # Line too long
+"ERA001",  # Found commented-out code
+]
+
+[tool.ruff.lint.flake8-quotes]
+docstring-quotes = "double"
+inline-quotes = "single"
+
+[tool.ruff.lint.isort]
+lines-after-imports = 2
+no-lines-before = ["future", "standard-library"]  # local-folder
+known-third-party = []
+known-local-folder = ["whole_app"]
+
+[tool.ruff.lint.extend-per-file-ignores]
+"__init__.py" = ["E402"]  # Ignore `E402` (import violations) in all `__init__.py` files
+"tests/*.py" = ["ANN401", "S101", "S311", "E402"]
+
+[tool.mypy]
+files='src/*'
+exclude = ["^_main\\.py$"]
+ignore_missing_imports = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true

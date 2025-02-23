@@ -1,0 +1,5 @@
+mypy
+ruff
+pytest
+pandas-stubs
+types-aiofiles
