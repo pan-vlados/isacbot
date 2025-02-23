@@ -2,7 +2,7 @@
 /venv
 __pycache__/
 _main.py
-.env
+.env.prd
 instance/
 .vscode/
 *.mo

@@ -18,7 +18,7 @@ classifiers = [
 dynamic = ["dependencies", "optional-dependencies"]
 
 [project.urls]
-# repository = ""
+repository = "https://github.com/pan-vlados/isacbot"
 
 [tool.setuptools.dynamic]
 # Here can be requirements.in, but we prefer to use hashed and compiled
