@@ -40,9 +40,9 @@ class ISACBotCommand(enum.StrEnum):
 
 # About commands scope [see](https://core.telegram.org/bots/api#determining-list-of-commands).
 def get_commands(i18n: 'I18n') -> '_ScopedBotCommands':
-    START = BotCommand(command=ISACBotCommand.START, description=StartAction.START)
+    START = BotCommand(command=ISACBotCommand.START, description=i18n.gettext(StartAction.START))
     CREATE_POLL = BotCommand(
-        command=ISACBotCommand.CREATE_POLL, description=StartAction.CREATE_POLL
+        command=ISACBotCommand.CREATE_POLL, description=i18n.gettext(StartAction.CREATE_POLL)
     )
     ROAD_MAP = BotCommand(
         command=ISACBotCommand.ROAD_MAP, description=i18n.gettext(N_('🛣️ [Дорожная карта]'))

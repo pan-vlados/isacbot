@@ -114,6 +114,4 @@ ChatTypeIsGroupFilter = ChatTypeFilter(chat_type=(ChatType.GROUP, ChatType.SUPER
 ChatMemberPromotedFilter = ChatMemberUpdatedFilter(member_status_changed=PROMOTED_TRANSITION)
 ChatMemberDemotedFilter = ChatMemberUpdatedFilter(member_status_changed=DEMOTED_TRANSITION)
 CreatePollCommandFilter = Command(ISACBotCommand.CREATE_POLL)
-UserIsAuthorizedFilter = StateFilter(
-    UserState.AUTHORIZED, UserState.AUTHORIZED_AND_REGISTERED, UserState.SETTINGS_CHANGE_REQUESTED
-)
+UserIsAuthorizedFilter = StateFilter(UserState.AUTHORIZED, UserState.SETTINGS_CHANGE_REQUESTED)

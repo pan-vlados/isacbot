@@ -28,11 +28,9 @@ if TYPE_CHECKING:
 
     from isacbot.database.utils import BigIntpk, Datestamp
 
+    # ruff: noqa: ARG001
 
 logger = logging.getLogger(__name__)
-
-
-# TODO: cached keyboards will not wok with i18n, lang arg, should be provided
 
 
 @cache
@@ -170,6 +168,3 @@ def send_poll_kb(polls: 'Sequence[Row[tuple[Datestamp, BigIntpk]]]') -> InlineKe
         inline_keyboard=kb,
         resize_keyboard=True,
     )
-
-
-# KeyboardButton request_poll

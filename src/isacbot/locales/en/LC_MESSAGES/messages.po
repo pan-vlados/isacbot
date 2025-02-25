@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: isacbot 1.0.0\n"
 "Report-Msgid-Bugs-To: pan.vlados.w@gmail.com\n"
-"POT-Creation-Date: 2025-02-23 04:03+0300\n"
-"PO-Revision-Date: 2025-02-23 04:05+0300\n"
+"POT-Creation-Date: 2025-02-23 07:14+0300\n"
+"PO-Revision-Date: 2025-02-23 07:18+0300\n"
 "Last-Translator: \n"
 "Language-Team: en <LL@li.org>\n"
 "Language: en\n"
@@ -85,15 +85,15 @@ msgstr "Show administrators"
 msgid "Обновить администраторов"
 msgstr "Update administrators"
 
-#: src/isacbot/keyboards.py:76
+#: src/isacbot/keyboards.py:73
 msgid "Воспользуйся меню👇"
 msgstr "Use the menu👇"
 
-#: src/isacbot/keyboards.py:125
+#: src/isacbot/keyboards.py:122
 msgid "Выберите статус☝️"
 msgstr "Select status☝️"
 
-#: src/isacbot/keyboards.py:147
+#: src/isacbot/keyboards.py:144
 msgid "Выберите действие 👇"
 msgstr "Select action 👇"
 
@@ -229,8 +229,8 @@ msgstr "⚙️ <b>Select available settings:</b>"
 msgid ""
 "Ваше имя {displayname}. Для изменения напишите новое имя в сообщении ниже 📝👇"
 msgstr ""
-"Your name is {displayname}. To change, write your new name in the message "
-"below 📝👇"
+"Your name is {displayname}. To change, write your new name in the message below "
+"📝👇"
 
 #: src/isacbot/handlers/settings.py:90
 msgid "Имя не установлено. Напишите новое имя в сообщении ниже 👇"
@@ -238,10 +238,8 @@ msgstr "Name not established. Write your new name in the message below 👇"
 
 #: src/isacbot/handlers/settings.py:95
 #, python-brace-format
-msgid ""
-"Ваш email {email}. Для изменения напишите новый email в сообщении ниже 📝👇"
-msgstr ""
-"Your email {email}. To change, write a new email in the message below 📝👇"
+msgid "Ваш email {email}. Для изменения напишите новый email в сообщении ниже 📝👇"
+msgstr "Your email {email}. To change, write a new email in the message below 📝👇"
 
 #: src/isacbot/handlers/settings.py:98
 msgid "Email не установлен. Напишите новый email в сообщении ниже 📝👇"
@@ -305,8 +303,7 @@ msgstr "⚠️ Dear {full_name}, use the {action} command to register."
 #: src/isacbot/handlers/start.py:150
 #, python-brace-format
 msgid "⚠️ Необходимо указать почтовый адрес в команде {sequence_of_actions}"
-msgstr ""
-"⚠️ You must specify a mailing address in the {sequence_of_actions} command"
+msgstr "⚠️ You must specify a mailing address in the {sequence_of_actions} command"
 
 #: src/isacbot/handlers/start.py:164
 msgid "⚠️ Ответы на опрос отсутствуют в базе данных."
@@ -366,8 +363,8 @@ msgstr "⚠️The poll is conducted only on Mondays."
 #: src/isacbot/middlewares/poll.py:182
 #, python-brace-format
 msgid ""
-"⚠️ Уважаемый(ая) {full_name}, для регистрации воспользуйтесь командой {command} "
-"в приватном чате со мной."
+"⚠️ Уважаемый(ая) {full_name}, для регистрации воспользуйтесь командой {command} в "
+"приватном чате со мной."
 msgstr ""
 "⚠️ Dear {full_name}, to register, use the {command} command in a private chat "
 "with me."

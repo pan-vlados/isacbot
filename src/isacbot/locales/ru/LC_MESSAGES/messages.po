@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: isacbot 1.0.0\n"
 "Report-Msgid-Bugs-To: pan.vlados.w@gmail.com\n"
-"POT-Creation-Date: 2025-02-23 04:03+0300\n"
+"POT-Creation-Date: 2025-02-23 07:14+0300\n"
 "PO-Revision-Date: 2025-02-23 04:03+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -85,15 +85,15 @@ msgstr ""
 msgid "Обновить администраторов"
 msgstr ""
 
-#: src/isacbot/keyboards.py:76
+#: src/isacbot/keyboards.py:73
 msgid "Воспользуйся меню👇"
 msgstr ""
 
-#: src/isacbot/keyboards.py:125
+#: src/isacbot/keyboards.py:122
 msgid "Выберите статус☝️"
 msgstr ""
 
-#: src/isacbot/keyboards.py:147
+#: src/isacbot/keyboards.py:144
 msgid "Выберите действие 👇"
 msgstr ""
 

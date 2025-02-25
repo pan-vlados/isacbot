@@ -36,7 +36,6 @@ class UserState(StatesGroup):
     UNAUTHORIZED = State()
     AUTHORIZED = State()
     SETTINGS_CHANGE_REQUESTED = State()
-    AUTHORIZED_AND_REGISTERED = State()
 
 
 class UserThreadID(enum.IntEnum):
