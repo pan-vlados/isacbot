@@ -1,0 +1,38 @@
+title = "Custom Gitleaks configuration"
+
+[extend]
+# useDefault will extend the default gitleaks config built in to the binary
+# the latest version is located at:
+# https://github.com/gitleaks/gitleaks/blob/master/config/gitleaks.toml
+useDefault = false
+
+# An array of tables that contain information that define instructions
+# on how to detect secrets
+[[rules]]
+# Unique identifier for this rule
+id = "strict-generic-api-key"
+# Short human readable description of the rule.
+description = "Strict generic-api-key rule."
+# Golang regular expression used to detect secrets. Note Golang's regex engine
+# does not support lookaheads. Maximum 150 symbols.
+regex = '''(?i)[\w.-]{0,50}?(?:access|auth|(?-i:[Aa]pi|API)|credential|creds|key|passw(?:or)?d|secret|token|mail)(?:[ \t\w.-]{0,20})[\s'"]{0,3}(?:=|>|:{1,3}=|\|\||:|=>|\?=|,)[\x60'"\s=]{0,5}(.{0,150})'''
+# Keywords are used for pre-regex check filtering. Rules that contain
+# keywords will perform a quick string compare check to make sure the
+# keyword(s) are in the content being scanned. Ideally these values should
+# either be part of the identiifer or unique strings specific to the rule's regex
+# (introduced in v8.6.0)
+keywords = [
+    "access",
+    "api",
+    "auth",
+    "key",
+    "credential",
+    "creds",
+    "passwd",
+    "password",
+    "secret",
+    "token",
+    "mail"
+]
+# Float representing the minimum shannon entropy a regex group must have to be considered a secret.
+# entropy = 3
