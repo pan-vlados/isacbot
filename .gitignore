@@ -3,6 +3,8 @@
 __pycache__/
 _main.py
 .env.prd
+.env
+TODO.md
 instance/
 .vscode/
 *.mo
