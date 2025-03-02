@@ -1,10 +1,11 @@
 .DS_Store
-/venv
+venv/
 __pycache__/
 _main.py
 .env.prd
 .env
-TODO.md
 instance/
 .vscode/
 *.mo
+.ruff_cache/
+.mypy_cache/

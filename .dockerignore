@@ -1,0 +1,32 @@
+# Defaults
+**/.DS_Store
+**/__pycache__
+**/.dockerignore
+**/.env*
+**/.git
+**/.gitignore
+**/.vscode
+**/docker-compose*
+**/compose.y*ml
+**/Dockerfile*
+
+# Project dependent files or files created in runtime
+Makefile
+venv
+pyproject.toml
+.python-version
+.pre-commit-config.yaml
+.gitleaks.toml
+requirements-dev.txt
+.ruff_cache
+.mypy_cache
+_main.py
+*.in
+*.md
+**/*.db
+**/*.po*
+
+
+# Un-excluded files
+!LICENSE
+!requirements.txt

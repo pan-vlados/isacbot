@@ -23,7 +23,7 @@ if TYPE_CHECKING:
         displayname: NotRequired[str | None]
         email: NotRequired[str | None]
 
-    PollAnswerType = tuple[
+    type PollAnswerType = tuple[
         Datestamp,
         str_255,
         str_255 | None,

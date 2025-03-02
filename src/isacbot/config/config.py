@@ -68,7 +68,9 @@ logging.basicConfig(
 )
 
 
-load_dotenv(dotenv_path=find_dotenv(filename='.env.prd', raise_error_if_not_found=True))
+load_dotenv(
+    dotenv_path=find_dotenv(filename='.env.prd', raise_error_if_not_found=False), override=True
+)
 
 
 BOT_TOKEN: Final[str] = getenv('BOT_TOKEN', '')
@@ -89,7 +91,7 @@ BOT_MAIN_CHAT_ID: Final[int] = (
 BOT_ADMINS: 'AdminsSetType' = defaultdict(
     set, {BOT_OWNER_ID: {BOT_OWNER_ID}}
 )  # owner personal chat is always added as admin
-BOT_TIMEZONE: Final[ZoneInfo] = ZoneInfo('Europe/Moscow')
+BOT_TIMEZONE: Final[ZoneInfo] = ZoneInfo(getenv('TZ', 'Europe/Moscow'))
 POLL_DEFAULT_CLOSE_DELAY: Final[int] = int(getenv('POLL_DEFAULT_CLOSE_DELAY') or 3600)
 SMTP_MAIL: Final[str] = getenv('SMTP_MAIL', '')
 SMTP_PASSWORD: Final[str] = getenv('SMTP_PASSWORD', '')

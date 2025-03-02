@@ -89,6 +89,27 @@ i18n-update: src/$(package)/locales venv/bin/pybabel
 	@make i18n-compile
 
 
+docker-build: .dockerignore
+	@docker build --platform=linux/amd64 -t $(package)_image .
+docker-run: src/$(package)/config/.env.prd docker-build
+	@docker run -d \
+	-it \
+	--platform=linux/amd64 \
+	--env-file $< \
+	--restart=unless-stopped \
+	--memory="512m" \
+	--cpus="1" \
+	--name $(package)_container \
+	$(package)_image
+docker-stop:
+	@docker stop $(package)_container
+docker-attach:
+	@docker attach $(package)_container
+docker-remove:
+	@docker rm $(package)_container
+docker-debug:
+	@docker run -it --name $(package)_container $(package)_image bash
+
 clean:
 	@find . -name __pycache__ -exec rm -rf {} +
 	@find src/$(package)/locales -name messages.mo -exec rm -rf {} +

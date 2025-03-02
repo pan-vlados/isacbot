@@ -85,7 +85,6 @@ async def stop_bot() -> None:
 async def main() -> None:
     async with db.connect():
         # Perform database preparation.
-        await db.drop_database()
         await db.create_database()
         await db.create_tables(base=Base)
         # Register middleware.

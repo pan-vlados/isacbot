@@ -144,6 +144,7 @@ async def send_poll_date_chosen_callback_handler(
     callback_data: SendPollCallback,
     state: 'UserContext',
     callback_message: 'Message',
+    language_code: str,
     admins: 'AdminsSetType',
 ) -> None:
     if not (user := await get_user(user_id=user_id)):
@@ -206,10 +207,16 @@ async def send_poll_date_chosen_callback_handler(
         ),
         show_alert=True,
     )
+    logger.info('The message was sent to recipient: %s. user_id=%d' % (user.email, user_id))
 
     await callback_message.delete()
     await start_handler(
-        message=callback_message, bot=bot, state=state, user_id=user_id, admins=admins
+        message=callback_message,
+        bot=bot,
+        state=state,
+        user_id=user_id,
+        language_code=language_code,
+        admins=admins,
     )
 
 
