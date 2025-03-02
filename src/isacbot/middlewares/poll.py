@@ -107,9 +107,11 @@ class PollCreationMessageOuterMiddleware(BaseMiddleware):
             )
             return None
 
-        # if not self.is_pool_day:
-        #     await event.answer(i18n.gettext(N_('⚠️ Опрос выполняется только по понедельникам.')), show_alert=True)
-        #     return None
+        if not self.is_pool_day:
+            await event.answer(
+                i18n.gettext(N_('⚠️ Опрос выполняется только по понедельникам.')), show_alert=True
+            )
+            return None
 
         data['poll_close_delay'] = await self.get_poll_close_delay_for_event(event=event)
         data['poll_date'] = poll_date

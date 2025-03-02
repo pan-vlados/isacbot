@@ -49,7 +49,7 @@ async def add_admins_from_main_chat() -> None:
 
 async def start_scheduler() -> None:
     scheduler.start()
-    scheduler.add_job(  # Add poll craetion on every Monday an 8:00
+    scheduler.add_job(  # Add poll creation on every Monday an 8:00
         name='main_chat_poll_every_monday',
         func=create_poll_in_chat,
         kwargs={'chat_id': BOT_MAIN_CHAT_ID},
