@@ -10,3 +10,4 @@ email_validator
 aiosmtplib
 openpyxl
 babel
+APScheduler

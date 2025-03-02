@@ -3,19 +3,16 @@ import logging
 from collections import defaultdict
 from os import getenv
 from pathlib import Path
-from typing import TYPE_CHECKING, Final, TypeVar
+from typing import TYPE_CHECKING, Final
 from zoneinfo import ZoneInfo
 
 from dotenv import find_dotenv, load_dotenv
 
 
 if TYPE_CHECKING:
-    from collections.abc import Mapping, MutableMapping
+    from collections.abc import Mapping
 
-    _ChatID = int
-    _AdminsID = TypeVar('_AdminsID', bound=set[int] | int)
-    AdminsContainerType = MutableMapping[_ChatID, _AdminsID]
-    AdminsSetType = AdminsContainerType[set[int]]
+    from isacbot.types_ import AdminsSetType
 
 
 class _LogColour(enum.StrEnum):
@@ -79,13 +76,18 @@ BOT_USERNAME: Final[str] = getenv('BOT_USERNAME', '')
 DB_PATH: Final[Path] = (
     Path(__file__).absolute().parent.parent / 'instance' / getenv('DB_NAME', 'main.db')
 )
+DB_SCHEDULER_PATH: Final[Path] = (
+    Path(__file__).absolute().parent.parent
+    / 'instance'
+    / getenv('DB_SCHEDULER_NAME', 'apscheduler.db')
+)
 BOT_ID: Final[int] = int(getenv('BOT_ID') or 0)
 BOT_OWNER_ID: Final[int] = int(getenv('BOT_OWNER_ID') or 0)
-BOT_MAIN_CHAT_ID: Final[int | None] = (
-    int(owner_id) if (owner_id := getenv('BOT_MAIN_CHAT_ID')) else None
+BOT_MAIN_CHAT_ID: Final[int] = (
+    int(main_chat_id) if (main_chat_id := getenv('BOT_MAIN_CHAT_ID')) else BOT_OWNER_ID
 )  # can be 0 when no main chat provided
-BOT_ADMINS: 'AdminsContainerType[set[int] | int]' = defaultdict(
-    set, {BOT_OWNER_ID: BOT_OWNER_ID}
+BOT_ADMINS: 'AdminsSetType' = defaultdict(
+    set, {BOT_OWNER_ID: {BOT_OWNER_ID}}
 )  # owner personal chat is always added as admin
 BOT_TIMEZONE: Final[ZoneInfo] = ZoneInfo('Europe/Moscow')
 POLL_DEFAULT_CLOSE_DELAY: Final[int] = int(getenv('POLL_DEFAULT_CLOSE_DELAY') or 3600)

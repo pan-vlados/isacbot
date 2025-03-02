@@ -166,7 +166,7 @@ async def get_poll_answers(poll_id: int, date: datetime.date) -> sa.Result['Poll
 
 
 async def get_poll_data(limit: int = 4) -> 'Sequence[sa.Row[tuple[Datestamp, BigIntpk]]]':
-    """Get data about only completed polls. Default `limit = 4`."""
+    """Get poll's data. Default `limit = 4`."""
     async with db.session.begin() as session:
         return (
             await session.execute(
@@ -175,7 +175,6 @@ async def get_poll_data(limit: int = 4) -> 'Sequence[sa.Row[tuple[Datestamp, Big
                     Poll.id,
                 )
                 .select_from(Poll)
-                .where(Poll.status == PollStatus.COMPLETED)
                 .order_by(Poll.date)
                 .limit(limit)
             )

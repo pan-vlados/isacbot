@@ -21,9 +21,10 @@ from isacbot.utils import AsyncSet
 
 
 if TYPE_CHECKING:
+    from aiogram import Bot
     from aiogram.types import Message, User
 
-    from isacbot.types_ import UserContext
+    from isacbot.types_ import AdminsSetType, UserContext
 
 
 logger = logging.getLogger(name=__name__)
@@ -185,14 +186,25 @@ async def wait_road_map_released_message_handler(
             )
 
 
-@router.message(F.text.in_((__(RoadMapAction.RELEASE), RoadMapAction.RELEASE)), IsAdminFilter())
+@router.message(F.text.in_((__(RoadMapAction.RELEASE), RoadMapAction.RELEASE)))
 async def release_road_map_message_handler(
-    message: 'Message', state: 'UserContext', *, is_admin: bool, language_code: str
+    message: 'Message',
+    state: 'UserContext',
+    bot: 'Bot',
+    *,
+    user_id: int,
+    language_code: str,
+    admins: 'AdminsSetType',
 ) -> None:
     if not _RML.is_locked():
         return
 
-    if not (await state.get_value('rml_owner') or is_admin):
+    if not (
+        await state.get_value('rml_owner')
+        or await IsAdminFilter.user_is_administrator(
+            bot=bot, chat_id=message.chat.id, user_id=user_id, admins=admins
+        )
+    ):
         await message.answer(
             text=_('⛔ Вы не можете разблокировать ДК заблокированную другим пользователем.'),
             reply_markup=road_map_kb(is_acquired=True, language_code=language_code),

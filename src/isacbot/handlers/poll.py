@@ -6,15 +6,15 @@ from aiogram import F, Router
 from aiogram.enums import ContentType
 from aiogram.filters import StateFilter
 from aiogram.types import Message
-from aiogram.utils.i18n import gettext as _
 
-from isacbot.config.background import create_background_task
+from isacbot.background.utils import create_delayed_background_task
 from isacbot.database.operations import (
     add_answer,
     create_poll,
     update_poll_status,
 )
 from isacbot.database.utils import PollOptions, PollStatus
+from isacbot.extensions import i18n
 from isacbot.filters import CreatePollCommandFilter, IsAdminFilter
 from isacbot.middlewares import (
     PollAnswerOuterMiddleware,
@@ -22,7 +22,7 @@ from isacbot.middlewares import (
     SwapUserStateFromPrivateChatOuterMiddleware,
 )
 from isacbot.states import PollState
-from isacbot.utils import stop_poll, unpin_poll
+from isacbot.utils import N_, stop_poll, unpin_poll
 
 
 if TYPE_CHECKING:
@@ -52,9 +52,14 @@ _POLL_OPTIONS: 'Mapping[int, PollOptions]' = dict(enumerate(PollOptions))
 _POLL_END = asyncio.Event()
 
 
+async def _SET_POLL_END() -> None:  # noqa: N802
+    """Async function to provide `_POLL_END.set` as the callabale coroutine."""
+    _POLL_END.set()
+
+
 @router.message(
     CreatePollCommandFilter,
-    IsAdminFilter.user_is_administrator,
+    IsAdminFilter(),
 )
 async def crete_poll_handler(
     message: Message,
@@ -65,16 +70,16 @@ async def crete_poll_handler(
     poll_close_delay: int,
 ) -> None:
     """Unregistered users can create a poll by calling this handler, but these
-    users are always verified using IsAdminFilter, so it doesn't matter.
+    users are always verified using `IsAdminFilter`, so it doesn't matter.
     """
     await poll_context.clear()
-    question: Final[str] = _('💻 Где Вы сегодня {poll_date}?').format(
+    question: Final[str] = i18n.gettext(N_('💻 Где Вы сегодня {poll_date}?')).format(
         poll_date=f'{poll_date:%d.%m.%Y}'
     )
     message = await bot.send_poll(
         chat_id=message.chat.id,
         question=question,
-        options=[_(option.value) for option in _POLL_OPTIONS.values()],
+        options=[i18n.gettext(option.value) for option in _POLL_OPTIONS.values()],
         type='regular',
         is_anonymous=False,
         allows_multiple_answers=False,
@@ -107,7 +112,7 @@ async def crete_poll_handler(
         await poll_context.set_state(PollState.STARTED_AND_PINNED)
     await poll_context.update_data(poll_message=message)
 
-    await create_background_task(task=_POLL_END.set, delay=poll_close_delay)
+    await create_delayed_background_task(task=_SET_POLL_END, delay=poll_close_delay)
     logger.info('Poll started.')
 
     # Wait until the end of the poll.

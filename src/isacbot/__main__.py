@@ -4,6 +4,7 @@ from aiogram.utils.i18n.middleware import (
     FSMI18nMiddleware,
 )
 
+from isacbot.background.tasks import create_poll_in_chat
 from isacbot.commands import get_commands
 from isacbot.config import (
     BOT_ADMINS,
@@ -17,6 +18,7 @@ from isacbot.extensions import (
     dp,
     i18n,
     mail_client,  # noqa: F401
+    scheduler,
 )
 from isacbot.handlers import admin, group, poll, private, road_map, settings, start
 from isacbot.middlewares import (
@@ -39,18 +41,29 @@ async def add_admins_from_main_chat() -> None:
     """Let's assume the bot works only with one main chat. This allows us to
     add admins from main chat to bot admins dictionary for correspondent chat.
     """
-    if BOT_MAIN_CHAT_ID:
+    if BOT_MAIN_CHAT_ID and BOT_MAIN_CHAT_ID != BOT_OWNER_ID:
         BOT_ADMINS[BOT_MAIN_CHAT_ID] = {
             admin.user.id for admin in (await bot.get_chat_administrators(chat_id=BOT_MAIN_CHAT_ID))
         }
 
 
+async def start_scheduler() -> None:
+    scheduler.start()
+    scheduler.add_job(  # Add poll craetion on every Monday an 8:00
+        name='main_chat_poll_every_monday',
+        func=create_poll_in_chat,
+        kwargs={'chat_id': BOT_MAIN_CHAT_ID},
+        trigger='cron',
+        day_of_week='mon',
+        hour='8',
+        minute='00',
+    )
+
+
 async def start_bot() -> None:
-    # TODO: make AuthStatus states for all registred users in DB
-    # lock all before state handling
-    # TODO: collect all admins in all chats and update in db
     await set_commands()
-    await add_admins_from_main_chat()
+    await add_admins_from_main_chat()  # TODO: collect all admins in all chats and update in db
+    await start_scheduler()
     await send_message(
         bot=bot,
         chat_id=BOT_OWNER_ID,

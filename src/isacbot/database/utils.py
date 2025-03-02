@@ -22,7 +22,8 @@ class PollOptions(enum.StrEnum):
     REMOTELY = N_('Удаленно')
     IN_OFFICE = N_('В офисе')
     ON_SICK = N_('На больничном')
-    ON_VACATION = N_('В отпуске')
+    ON_VACATION_RU = N_('В отпуске (РФ)')
+    ON_VACATION = N_('В отпуске (не РФ)')
     VALID_REASON = N_('Отсутствую по уважительной причине')
     DEFAULT = N_('Неизвестно')
 

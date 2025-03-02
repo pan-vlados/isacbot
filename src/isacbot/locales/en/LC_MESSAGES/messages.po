@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: isacbot 1.0.0\n"
 "Report-Msgid-Bugs-To: pan.vlados.w@gmail.com\n"
-"POT-Creation-Date: 2025-02-23 07:14+0300\n"
-"PO-Revision-Date: 2025-02-23 07:18+0300\n"
+"POT-Creation-Date: 2025-03-01 17:29+0300\n"
+"PO-Revision-Date: 2025-03-01 17:31+0300\n"
 "Last-Translator: \n"
 "Language-Team: en <LL@li.org>\n"
 "Language: en\n"
@@ -85,15 +85,15 @@ msgstr "Show administrators"
 msgid "Обновить администраторов"
 msgstr "Update administrators"
 
-#: src/isacbot/keyboards.py:73
+#: src/isacbot/keyboards.py:74
 msgid "Воспользуйся меню👇"
 msgstr "Use the menu👇"
 
-#: src/isacbot/keyboards.py:122
+#: src/isacbot/keyboards.py:123
 msgid "Выберите статус☝️"
 msgstr "Select status☝️"
 
-#: src/isacbot/keyboards.py:144
+#: src/isacbot/keyboards.py:145
 msgid "Выберите действие 👇"
 msgstr "Select action 👇"
 
@@ -110,14 +110,18 @@ msgid "На больничном"
 msgstr "On sick"
 
 #: src/isacbot/database/utils.py:25
-msgid "В отпуске"
-msgstr "On vacation"
+msgid "В отпуске (РФ)"
+msgstr "On vacation (RU)"
 
 #: src/isacbot/database/utils.py:26
+msgid "В отпуске (не РФ)"
+msgstr "On vacation (non RU)"
+
+#: src/isacbot/database/utils.py:27
 msgid "Отсутствую по уважительной причине"
 msgstr "Absent for a valid reason"
 
-#: src/isacbot/database/utils.py:27
+#: src/isacbot/database/utils.py:28
 msgid "Неизвестно"
 msgstr "Unknown"
 

@@ -8,8 +8,8 @@ repos:
         - --redact=0
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.9.7
+    rev: v0.9.9
     hooks:
       - id: ruff
-        args: [--fix, --exit-non-zero-on-fix, --show-fixes]
+        args: [--fix-only, --exit-non-zero-on-fix, --show-fixes]
       - id: ruff-format

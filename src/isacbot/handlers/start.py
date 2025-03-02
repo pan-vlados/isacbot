@@ -36,9 +36,10 @@ from isacbot.states import UserState
 
 
 if TYPE_CHECKING:
+    from aiogram import Bot
     from aiogram.types import CallbackQuery, Message
 
-    from isacbot.types_ import UserContext
+    from isacbot.types_ import AdminsSetType, UserContext
 
     # ruff: noqa: ARG001
 
@@ -54,7 +55,12 @@ MAX_DIALOUGE_DEEP: Final = 2  # the value corresponds to the maximum dialogue de
 
 @router.message(CommandStart())
 async def start_handler(
-    message: 'Message', state: 'UserContext', user_id: int, language_code: str
+    message: 'Message',
+    bot: 'Bot',
+    state: 'UserContext',
+    user_id: int,
+    language_code: str,
+    admins: 'AdminsSetType',
 ) -> None:
     await state.clear()  # clear settings state as well cause it's stored inside data of this state
     if not (message_user := message.from_user):  # in case there is no from_user
@@ -83,7 +89,9 @@ async def start_handler(
     await message.answer(
         text=text,
         reply_markup=start_kb(
-            is_admin=IsAdminFilter.user_is_administrator(chat_id=message.chat.id, user_id=user_id),
+            is_admin=await IsAdminFilter.user_is_administrator(
+                bot=bot, chat_id=message.chat.id, user_id=user_id, admins=admins
+            ),
             language_code=language_code,
         ),
     )
@@ -91,7 +99,7 @@ async def start_handler(
 
 @router.callback_query(
     StartCallback.filter(F.action == StartAction.CREATE_POLL),
-    IsAdminFilter.user_is_administrator,
+    IsAdminFilter(),
 )
 async def create_poll_callback_handler(callback: 'CallbackQuery') -> None:
     await callback.answer(
@@ -102,7 +110,7 @@ async def create_poll_callback_handler(callback: 'CallbackQuery') -> None:
 
 @router.callback_query(
     StartCallback.filter(F.action == StartAction.SEND_POLL_RESULT),
-    IsAdminFilter.user_is_administrator,
+    IsAdminFilter(),
 )
 async def send_poll_result_callback_handler(
     callback: 'CallbackQuery', state: 'UserContext', callback_message: 'Message'
@@ -127,14 +135,16 @@ async def send_poll_result_callback_handler(
 
 @router.callback_query(
     SendPollCallback.filter(F.date.regexp(pattern=r'^\d{1,2}\.\d{1,2}\.\d{2,4}$')),
-    IsAdminFilter.user_is_administrator,
+    IsAdminFilter(),
 )
 async def send_poll_date_chosen_callback_handler(
     callback: 'CallbackQuery',
+    bot: 'Bot',
     user_id: int,
     callback_data: SendPollCallback,
     state: 'UserContext',
     callback_message: 'Message',
+    admins: 'AdminsSetType',
 ) -> None:
     if not (user := await get_user(user_id=user_id)):
         await callback.answer(
@@ -198,7 +208,9 @@ async def send_poll_date_chosen_callback_handler(
     )
 
     await callback_message.delete()
-    await start_handler(message=callback_message, state=state, user_id=user_id)
+    await start_handler(
+        message=callback_message, bot=bot, state=state, user_id=user_id, admins=admins
+    )
 
 
 @router.callback_query(BackButtonCallback.filter(F.action == DefaultAction.BACK))
@@ -220,10 +232,7 @@ async def back_callback_handler(
     )
 
 
-@router.callback_query(
-    StartCallback.filter(F.action == StartAction.HELP),
-    IsAdminFilter(),
-)
+@router.callback_query(StartCallback.filter(F.action == StartAction.HELP))
 async def help_callback_handler(
     callback: 'CallbackQuery',
     callback_message: 'Message',

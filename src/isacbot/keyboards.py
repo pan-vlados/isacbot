@@ -1,5 +1,4 @@
 import logging
-from functools import cache
 from typing import TYPE_CHECKING
 
 from aiogram.types import (
@@ -27,8 +26,12 @@ if TYPE_CHECKING:
     from sqlalchemy import Row
 
     from isacbot.database.utils import BigIntpk, Datestamp
+    from isacbot.types_ import cache
 
     # ruff: noqa: ARG001
+else:
+    from functools import cache
+
 
 logger = logging.getLogger(__name__)
 

@@ -10,6 +10,7 @@ from typing import (
 
 if TYPE_CHECKING:
     import asyncio
+    from collections.abc import Callable, MutableMapping
 
     from aiogram.fsm.context import FSMContext
     from aiogram.types import CallbackQuery, Message
@@ -51,3 +52,13 @@ if TYPE_CHECKING:
         async def update_data(  # type: ignore[override]
             self, data: UserStateDataMapping | None = None, **kwargs: Unpack[UserStateDataMapping]
         ) -> UserStateDataMapping: ...
+
+    # Implementation of the typed `cache` function to provide type hints for cached functions.
+    # [see](https://github.com/python/mypy/issues/5107#issuecomment-529372406)
+    def cache[_F: Callable](func: _F) -> _F:
+        return func
+
+    type _AdminsContainerType[_ChatID: int, _AdminsID: set[int]] = MutableMapping[
+        _ChatID, _AdminsID
+    ]
+    type AdminsSetType = _AdminsContainerType[int, set[int]]

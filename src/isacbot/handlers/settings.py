@@ -33,7 +33,7 @@ if TYPE_CHECKING:
     from aiogram.types import CallbackQuery
 
     from isacbot.database.operations import UserUpdateMapping
-    from isacbot.types_ import UserContext, UserStateDataMapping
+    from isacbot.types_ import AdminsSetType, UserContext, UserStateDataMapping
 
     # ruff: noqa: ARG001
 
@@ -118,6 +118,7 @@ async def change_settings_response_handler(
     state: 'UserContext',
     user_id: int,
     language_code: str,
+    admins: 'AdminsSetType',
 ) -> None:
     if not (text := message.text):
         return
@@ -196,5 +197,10 @@ async def change_settings_response_handler(
 
     await callback_query.message.delete()
     await start.start_handler(
-        message=message, state=state, user_id=user_id, language_code=language_code
+        message=message,
+        bot=bot,
+        state=state,
+        user_id=user_id,
+        language_code=language_code,
+        admins=admins,
     )

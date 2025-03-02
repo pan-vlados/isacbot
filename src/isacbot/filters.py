@@ -16,7 +16,6 @@ from aiogram.utils.chat_member import ADMINS, MEMBERS
 from email_validator import EmailNotValidError, validate_email
 
 from isacbot.commands import ISACBotCommand
-from isacbot.config import BOT_ADMINS, BOT_OWNER_ID
 from isacbot.states import UserState
 
 
@@ -25,6 +24,8 @@ if TYPE_CHECKING:
 
     from aiogram import Bot
     from aiogram.types import Chat
+
+    from isacbot.types_ import AdminsSetType
 
 
 logger = logging.getLogger(__name__)
@@ -55,28 +56,37 @@ class IsAdminFilter(BaseFilter):
     There are two ways of use:
         1. `IsAdminFilter.user_is_administrator` - return `bool`,
         static check in set of admins
-        2. `IsAdminFilter.__call__(...)` - always be `True` because
-        it returns dictionary, provide `is_admin` argument into handler.
+        2. `IsAdminFilter.__call__(...)` - provide `is_admin` argument
+        into handler if check was successful.
     """
 
     @staticmethod
-    def user_is_administrator(chat_id: int, user_id: int) -> bool:
-        return True if user_id == BOT_OWNER_ID else user_id in BOT_ADMINS[chat_id]  # type: ignore
+    async def user_is_administrator(
+        bot: 'Bot', chat_id: int, user_id: int, admins: 'AdminsSetType'
+    ) -> bool:
+        return user_id in admins[chat_id] or isinstance(
+            (await bot.get_chat_member(chat_id=chat_id, user_id=user_id)), ADMINS
+        )
 
     async def __call__(  # type: ignore[override]
-        self, event: Message | CallbackQuery | ChatMemberUpdated, bot: 'Bot', user_id: int
-    ) -> 'Mapping[Literal["is_admin"], bool]':
+        self,
+        event: Message | CallbackQuery | ChatMemberUpdated,
+        bot: 'Bot',
+        user_id: int,
+        admins: 'AdminsSetType',
+    ) -> 'Mapping[Literal["is_admin"], bool] | Literal[False]':
         chat: Chat
         if isinstance(event, Message | ChatMemberUpdated):
             chat = event.chat
         elif isinstance(event, CallbackQuery) and event.message:
             chat = event.message.chat
         else:
-            return {'is_admin': False}
+            return False
 
         return {
-            'is_admin': self.user_is_administrator(chat_id=chat.id, user_id=user_id)
-            or isinstance((await bot.get_chat_member(chat_id=chat.id, user_id=user_id)), ADMINS)
+            'is_admin': await self.user_is_administrator(
+                bot=bot, chat_id=chat.id, user_id=user_id, admins=admins
+            )
         }
 
 

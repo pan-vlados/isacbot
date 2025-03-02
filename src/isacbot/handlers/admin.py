@@ -37,9 +37,9 @@ if TYPE_CHECKING:
         Message,
     )
 
-    from isacbot.config.config import AdminsSetType
+    from isacbot.types_ import AdminsSetType
 
-    _NewChatMemberType = (
+    type _NewChatMemberType = (
         ChatMemberOwner
         | ChatMemberAdministrator
         | ChatMemberMember

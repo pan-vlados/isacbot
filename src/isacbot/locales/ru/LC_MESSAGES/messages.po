@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: isacbot 1.0.0\n"
 "Report-Msgid-Bugs-To: pan.vlados.w@gmail.com\n"
-"POT-Creation-Date: 2025-02-23 07:14+0300\n"
+"POT-Creation-Date: 2025-03-01 17:29+0300\n"
 "PO-Revision-Date: 2025-02-23 04:03+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -85,15 +85,15 @@ msgstr ""
 msgid "Обновить администраторов"
 msgstr ""
 
-#: src/isacbot/keyboards.py:73
+#: src/isacbot/keyboards.py:74
 msgid "Воспользуйся меню👇"
 msgstr ""
 
-#: src/isacbot/keyboards.py:122
+#: src/isacbot/keyboards.py:123
 msgid "Выберите статус☝️"
 msgstr ""
 
-#: src/isacbot/keyboards.py:144
+#: src/isacbot/keyboards.py:145
 msgid "Выберите действие 👇"
 msgstr ""
 
@@ -110,14 +110,18 @@ msgid "На больничном"
 msgstr ""
 
 #: src/isacbot/database/utils.py:25
-msgid "В отпуске"
+msgid "В отпуске (РФ)"
 msgstr ""
 
 #: src/isacbot/database/utils.py:26
-msgid "Отсутствую по уважительной причине"
+msgid "В отпуске (не РФ)"
 msgstr ""
 
 #: src/isacbot/database/utils.py:27
+msgid "Отсутствую по уважительной причине"
+msgstr ""
+
+#: src/isacbot/database/utils.py:28
 msgid "Неизвестно"
 msgstr ""
 
@@ -352,4 +356,7 @@ msgid ""
 "⚠️ Уважаемый(ая) {full_name}, для регистрации воспользуйтесь командой "
 "{command} в приватном чате со мной."
 msgstr ""
+
+#~ msgid "В отпуске"
+#~ msgstr ""
 

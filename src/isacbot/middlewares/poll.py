@@ -13,9 +13,10 @@ from isacbot.database.operations import (
     get_user,
     poll_already_exist,
 )
+from isacbot.extensions import i18n
 from isacbot.filters import CreatePollCommandFilter
 from isacbot.states import PollContext, PollState
-from isacbot.utils import Weekday
+from isacbot.utils import N_, Weekday
 
 
 if TYPE_CHECKING:
@@ -62,8 +63,10 @@ class PollCreationMessageOuterMiddleware(BaseMiddleware):
                     % open_period
                 )
                 await event.answer(
-                    text=_(
-                        '⚠️ Неправильный формат команды. Пример:\n/{command} <time in ISO 8601 format>\n\nУстановлено стандартное время закрытия опроса через {default_close_time}.'
+                    text=i18n.gettext(
+                        N_(
+                            '⚠️ Неправильный формат команды. Пример:\n/{command} <time in ISO 8601 format>\n\nУстановлено стандартное время закрытия опроса через {default_close_time}.'
+                        )
                     ).format(
                         command=ISACBotCommand.CREATE_POLL.value,
                         default_close_time=f'{datetime.timedelta(seconds=self.poll_close_delay)!s}',
@@ -84,8 +87,11 @@ class PollCreationMessageOuterMiddleware(BaseMiddleware):
         event: Message,
         data: dict[str, Any],
     ) -> Any:
+        if not event.bot:
+            return None
+
         # Check for the correct command in message.
-        if not (await CreatePollCommandFilter(message=event, bot=data['bot'])):
+        if not (await CreatePollCommandFilter(message=event, bot=event.bot)):
             logger.debug('The message was called with the following text `%s`.' % event.text)
             # All messages will pass through this tiny bottleneck.
             return await handler(event, data)
@@ -95,15 +101,15 @@ class PollCreationMessageOuterMiddleware(BaseMiddleware):
         if (await poll_context.get_state()) or (await poll_already_exist(date=poll_date)):
             logger.debug('Poll already exist.')
             await event.answer(
-                text=_('⚠️ Опрос на дату {poll_date} уже сформирован.').format(
+                text=i18n.gettext(N_('⚠️ Опрос на дату {poll_date} уже сформирован.')).format(
                     poll_date=f'{poll_date:%d.%m.%Y}'
                 )
             )
             return None
 
-        if not self.is_pool_day:
-            await event.answer(_('⚠️ Опрос выполняется только по понедельникам.'), show_alert=True)
-            return None
+        # if not self.is_pool_day:
+        #     await event.answer(i18n.gettext(N_('⚠️ Опрос выполняется только по понедельникам.')), show_alert=True)
+        #     return None
 
         data['poll_close_delay'] = await self.get_poll_close_delay_for_event(event=event)
         data['poll_date'] = poll_date

@@ -1,6 +1,5 @@
 import asyncio
 import enum
-from functools import cache
 from typing import (
     TYPE_CHECKING,
     Any,
@@ -23,6 +22,10 @@ if TYPE_CHECKING:
     from asyncio import Lock
 
     from aiogram.fsm.storage.base import BaseStorage
+
+    from isacbot.types_ import cache
+else:
+    from functools import cache
 
 
 class PollState(StatesGroup):

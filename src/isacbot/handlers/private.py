@@ -14,7 +14,7 @@ from isacbot.filters import IsAdminFilter
 if TYPE_CHECKING:
     from aiogram.types import ChatMemberUpdated, Message
 
-    from isacbot.handlers.admin import AdminsSetType
+    from isacbot.types_ import AdminsSetType
 
 
 logger = logging.getLogger(name=__name__)
@@ -41,7 +41,7 @@ async def user_unblocked_bot_handler(event: 'ChatMemberUpdated') -> None:
         PRIVATE_USERS.add(event.from_user.id)
 
 
-@router.message(Command(ISACBotCommand.ADMINS), IsAdminFilter.user_is_administrator)
+@router.message(Command(ISACBotCommand.ADMINS), IsAdminFilter())
 async def admins_handler(message: 'Message', admins: 'AdminsSetType') -> None:
     await message.answer(
         text='\n'.join(

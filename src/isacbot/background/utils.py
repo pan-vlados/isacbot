@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from asyncio import Task
-    from collections.abc import Callable
+    from collections.abc import Awaitable, Callable
 
 
 logger = logging.getLogger(__name__)
@@ -19,12 +19,16 @@ logger = logging.getLogger(__name__)
 BACKGROUND_TASKS: set['Task'] = set()
 
 
-async def _delay_task(task: 'Callable[[], None]', delay: int, *args: Any, **kwargs: Any) -> Any:
+async def _delay_task(
+    task: 'Callable[[], Awaitable[Any]]', delay: int, *args: Any, **kwargs: Any
+) -> 'Awaitable[Any]':
     await asyncio.sleep(delay=delay)
-    return task(*args, **kwargs)
+    return await task(*args, **kwargs)
 
 
-async def create_background_task(*, task: 'Callable[[], None]', delay: int, **kwargs: Any) -> None:
+async def create_delayed_background_task(
+    *, task: 'Callable[[], Awaitable[Any]]', delay: int, **kwargs: Any
+) -> 'Awaitable[Any]':
     """Create delayed background task using `asyncio.sleep` and don't block
     current event loop.
     """
@@ -40,3 +44,4 @@ async def create_background_task(*, task: 'Callable[[], None]', delay: int, **kw
     # make each task remove its own reference from the set after
     # completion:
     background_task.add_done_callback(BACKGROUND_TASKS.discard)
+    return background_task
