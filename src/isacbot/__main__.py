@@ -10,9 +10,11 @@ from isacbot.config import (
     BOT_ADMINS,
     BOT_MAIN_CHAT_ID,
     BOT_OWNER_ID,
+    BOT_TIMEZONE,
 )
 from isacbot.database.models import Base
 from isacbot.extensions import (
+    CronTrigger,
     bot,
     db,
     dp,
@@ -51,12 +53,11 @@ async def start_scheduler() -> None:
     scheduler.start()
     scheduler.add_job(  # Add poll creation on every Monday an 8:00
         name='main_chat_poll_every_monday',
+        replace_existing=True,
+        misfire_grace_time=None,
         func=create_poll_in_chat,
         kwargs={'chat_id': BOT_MAIN_CHAT_ID},
-        trigger='cron',
-        day_of_week='mon',
-        hour='8',
-        minute='00',
+        trigger=CronTrigger(day_of_week='mon', hour='8', minute='00', timezone=BOT_TIMEZONE),
     )
 
 

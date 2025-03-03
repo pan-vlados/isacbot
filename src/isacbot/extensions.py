@@ -6,6 +6,7 @@ from aiogram.fsm.strategy import FSMStrategy
 from aiogram.utils.i18n import I18n
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from apscheduler.triggers.cron import CronTrigger  # noqa: F401
 
 from isacbot.config import (
     BOT_LANG_LOCAL_DEFUALT,
@@ -37,6 +38,11 @@ scheduler = AsyncIOScheduler(
             url=f'sqlite:///{DB_SCHEDULER_PATH}',
             tablename='jobs',
         )
+    },
+    job_defaults={
+        'coalesce': True,  # Roll misfired executions into one.
+        'max_instances': 1,
+        'misfire_grace_time': None,  # Tell APScheduler to schedule the job as soon as it can instead of discarding it.
     },
     timezone=BOT_TIMEZONE,
 )

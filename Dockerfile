@@ -13,6 +13,9 @@ ENV PYTHONUNBUFFERED=1
 ENV PIP_ROOT_USER_ACTION=ignore
 # Add PYTHONPATH for explicit python packages importing in project.
 ENV PYTHONPATH=/usr/src
+# Set default timezone in container
+ENV TZ=Europe/Moscow
+
 
 ARG PROJECT_DIRPATH=src/isacbot
 
@@ -34,9 +37,10 @@ RUN adduser \
 
 
 RUN apt-get update && apt-get install -y --no-install-recommends && \
+# Add symlinks for /etc/localtime and /etc/timezone on TZ variable.
+    ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
     apt-get install sqlite3 && \
     pip install --upgrade pip && \
-    # chown -v isacbot_user:isacbot_user requirements.txt && \
 # Remove build dependencies and intermediate files after install.
     apt-get clean && rm -rf /var/lib/apt/lists/*
 

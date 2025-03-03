@@ -91,7 +91,7 @@ i18n-update: src/$(package)/locales venv/bin/pybabel
 
 docker-build: .dockerignore
 	@docker build --platform=linux/amd64 -t $(package)_image .
-docker-run: src/$(package)/config/.env.prd docker-build
+docker-run: src/$(package)/config/.env.prd
 	@docker run -d \
 	-it \
 	--platform=linux/amd64 \
@@ -109,6 +109,11 @@ docker-remove:
 	@docker rm $(package)_container
 docker-debug:
 	@docker run -it --name $(package)_container $(package)_image bash
+docker-list-container-env:
+	@docker inspect --format='{{range .Config.Env}}{{println .}}{{end}}' $(package)_container
+docker-list-image-env:
+	@docker inspect --format='{{range .Config.Env}}{{println .}}{{end}}' $(package)_image
+
 
 clean:
 	@find . -name __pycache__ -exec rm -rf {} +
