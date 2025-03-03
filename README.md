@@ -37,6 +37,10 @@ Create and fill in environment variables in [.env.prd](src/isacbot/config/.env.p
 cat src/isacbot/config/.env.dev > src/isacbot/config/.env.prd
 vi !$
 ```
+Create venv and install requirements:
+```bash
+make venv
+```
 Compile language [translations](/src/isacbot/locales/) (supports 🇷🇺/🇺🇸 for users):
 ```bash
 make i18n-compile
