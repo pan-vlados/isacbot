@@ -22,10 +22,10 @@ venv/bin/activate:
 	@. ./$@
 	@$(PIP) install --upgrade pip
 ifneq ("$(wildcard ./requirements.txt)", "")
-	@$(PIP) install --require-hashes --only-binary :all: -r requirements.txt
+	@$(PIP) install --require-hashes --no-deps --only-binary :all: -r requirements.txt
 endif
 ifneq ("$(wildcard ./requirements-dev.txt)", "")
-	@$(PIP) install --require-hashes --only-binary :all: -r requirements-dev.txt
+	@$(PIP) install --require-hashes --no-deps --only-binary :all: -r requirements-dev.txt
 endif
 venv: venv/bin/activate
 	@. ./$<
@@ -89,8 +89,8 @@ i18n-update: src/$(package)/locales venv/bin/pybabel
 	@make i18n-compile
 
 
-docker-build: .dockerignore
-	@docker build --platform=linux/amd64 -t $(package)_image .
+docker-build: .python-version .dockerignore
+	@docker build --platform=linux/amd64 --build-arg PYTHON_VERSION=$(shell cat $<) -t $(package)_image .
 docker-run: src/$(package)/config/.env.prd
 	@docker run -d \
 	-it \
