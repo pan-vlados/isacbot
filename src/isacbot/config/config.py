@@ -46,8 +46,9 @@ class _LevelDependentFormatter(logging.Formatter):
     _datefmt: Final = '%Y-%m-%d %H:%M:%S'  # logs without milliseconds
 
     def format(self, record: logging.LogRecord) -> str:
-        log_fmt = self._formats.get(record.levelno)
-        return logging.Formatter(log_fmt, datefmt=self._datefmt).format(record)
+        return logging.Formatter(self._formats.get(record.levelno), datefmt=self._datefmt).format(
+            record
+        )
 
 
 def _level_dependent_formated_stream_handler() -> logging.StreamHandler:

@@ -4,17 +4,18 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "isacbot"
-version = "1.0.2"
+version = "1.0.2post1"
 authors = [
   {name = "Anisimov Vladislav", email = "pan.vlados.w@gmail.com" },
 ]
-description = ""
+description = "An example of a telegram bot that allows you to check employee attendance on Mondays."
 readme = "README.md"
 license = {file = "LICENSE"}
 requires-python = ">=3.12.8"
 classifiers = [
     "Programming Language :: Python :: 3",
 ]
+keywords = ["telegram", "bot", "aiogram", "sqlalchemy"]
 dynamic = ["dependencies", "optional-dependencies"]
 
 [project.urls]
@@ -82,7 +83,6 @@ known-local-folder = ["whole_app"]
 
 [tool.mypy]
 files='src/*'
-exclude = ["^_main\\.py$"]
 ignore_missing_imports = true
 disallow_untyped_defs = true
 disallow_incomplete_defs = true
