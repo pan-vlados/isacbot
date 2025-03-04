@@ -108,7 +108,7 @@ async def crete_poll_handler(
         # In the first case it is a user, in the second it is a bot. That's why we
         # need to manually create a `StorageKey` and provide some filters to intercept
         # the pinned message with the corresponding FSM state. This manually created
-        # `StorageKey` placed inside `poll_state` variable and initialized before handler.
+        # `StorageKey` placed inside `poll_context` variable and initialized before handler.
         await poll_context.set_state(PollState.STARTED_AND_PINNED)
     await poll_context.update_data(poll_message=message)
 

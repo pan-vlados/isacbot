@@ -246,10 +246,10 @@ async def help_callback_handler(
 ) -> None:
     await callback_message.answer(
         text=_(
-            '🤖 This bot allows you to:\n\n'
-            '1️⃣ create and receive a poll about the presence of an employee on Mondays;\n'
-            '2️⃣ send the results of a poll to the mailbox;\n'
-            '3️⃣ register the user’s name and email;\n'
-            '4️⃣ participate in blocking/unblocking the roadmap (a work file filled out according to the activities of the department).'
+            '🤖 Этот бот позволяет:\n\n'
+            '- 📆 создавать и получать опрос о посещаемости сотрудников по понедельникам;\n'
+            '- 📧 отправлять результаты опроса на почтовый ящик;\n'
+            '- 📝 \u200b\u200bрегистрировать имя и email пользователя;\n'
+            '- 🔒 участвовать в блокировке/разблокировке дорожной карты (рабочего файла, заполненного по направлениям деятельности отдела).'
         ),
     )

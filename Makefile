@@ -67,6 +67,7 @@ pip-upgrade-all: venv/bin/pip-compile requirements.in requirements-dev.in
 i18n-extract: src/$(package) venv/bin/pybabel
 	@$(word 2,$^) extract \
 	--keywords=N_ \
+	--no-location \
 	--msgid-bugs-address="pan.vlados.w@gmail.com" \
 	--copyright-holder="Vladislav Anisimov" \
 	--project=$(package) \

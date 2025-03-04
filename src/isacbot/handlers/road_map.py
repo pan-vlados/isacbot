@@ -35,7 +35,7 @@ router.message.filter(
 router.message.outer_middleware(SwapUserStateFromPrivateChatOuterMiddleware())
 router.message.middleware(
     RoadMapInputMessageDeleteInnerMiddleware()
-)  # all messages afte rfilter will be delted in chat
+)  # all messages after filter will be delted in chat
 
 
 class _RMLState(enum.Enum):
