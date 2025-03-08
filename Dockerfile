@@ -2,7 +2,8 @@
 # `APP` ARG is only applicable for the src-layout.
 ARG APP=src/isacbot \
     PYTHON_VERSION=3.12.8 \
-    VIRTUAL_ENV=/opt/venv
+    VIRTUAL_ENV=/opt/venv \
+    INSTANCE_VOLUME=/usr/%{APP}/instance
 
 
 FROM python:${PYTHON_VERSION}-slim AS builder
@@ -40,7 +41,8 @@ FROM python:${PYTHON_VERSION}-slim AS runner
 
 
 ARG APP \
-    VIRTUAL_ENV
+    VIRTUAL_ENV \
+    INSTANCE_VOLUME
 ENV VIRTUAL_ENV=${VIRTUAL_ENV} \
     PATH="${VIRTUAL_ENV}/bin:$PATH" \
 # Add PYTHONPATH for explicit python packages importing in project.
@@ -69,7 +71,7 @@ COPY --from=builder ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 # Copy the source code into the container.
 COPY ./${APP} LICENSE ./
 # Give permissions for non-privileged user to db instance.
-RUN chmod 700 ./instance && chown -v isacbot_user:isacbot_user ./instance
+RUN chmod 700 ${INSTANCE_VOLUME} && chown -v isacbot_user:isacbot_user ${INSTANCE_VOLUME}
 # Switch to the non-privileged user to run the application.
 USER isacbot_user
 # Run the application.

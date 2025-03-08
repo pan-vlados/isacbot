@@ -9,6 +9,7 @@
 PIP = venv/bin/pip
 PYTHON = venv/bin/python
 package = isacbot
+INSTANCE_VOLUME = /usr/src/$(package)/instance
 VERSION = $(shell sed -n 's/^.*version = "\(.\..\..\)"/\1/p' pyproject.toml)
 # Assign this target-specific variable to solve the problem with PYTHONPATH
 # and absolute imports in the src-layout project at all launch points.
@@ -91,7 +92,11 @@ i18n-update: src/$(package)/locales venv/bin/pybabel
 
 
 docker-build: .python-version .dockerignore
-	@docker build --platform=linux/amd64 --build-arg PYTHON_VERSION=$(shell cat $<) -t $(package)_image .
+	@docker build \
+	--platform=linux/amd64 \
+	--build-arg PYTHON_VERSION=$(shell cat $<) \
+	--build-arg INSTANCE_VOLUME=$(INSTANCE_VOLUME) \
+	-t $(package)_image .
 docker-run: src/$(package)/config/.env.prd
 	@docker run -d \
 	-it \
@@ -101,6 +106,7 @@ docker-run: src/$(package)/config/.env.prd
 	--memory="512m" \
 	--cpus="1" \
 	--name $(package)_container \
+	--volume instance:$(INSTANCE_VOLUME) \
 	$(package)_image
 docker-stop:
 	@docker stop $(package)_container
