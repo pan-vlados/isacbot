@@ -7,7 +7,7 @@ from .base import (
 )
 from .poll import (
     PollAnswerOuterMiddleware,
-    PollCreationMessageOuterMiddleware,
+    PollCreationMessageInnerMiddleware,
 )
 from .road_map import RoadMapInputMessageDeleteInnerMiddleware
 from .settings import SettingsCallbackQueryMiddleware
@@ -20,7 +20,7 @@ __all__ = (
     'DelayMiddleware',
     'EventFromUserMiddleware',
     'PollAnswerOuterMiddleware',
-    'PollCreationMessageOuterMiddleware',
+    'PollCreationMessageInnerMiddleware',
     'RoadMapInputMessageDeleteInnerMiddleware',
     'SettingsCallbackQueryMiddleware',
     'SwapUserStateFromPrivateChatOuterMiddleware',

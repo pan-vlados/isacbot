@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING, Any
 from isacbot.commands import ISACBotCommand
 from isacbot.extensions import bot, dp
 from isacbot.handlers import poll
-from isacbot.middlewares.poll import PollCreationMessageOuterMiddleware
+from isacbot.middlewares.poll import PollCreationMessageInnerMiddleware
 from isacbot.states import PollContext, get_fsm_context
 
 
@@ -25,7 +25,7 @@ async def create_poll_in_chat(chat_id: int) -> None:
         chat_id=chat_id,
         text=f'/{ISACBotCommand.CREATE_POLL}',
     )
-    await PollCreationMessageOuterMiddleware().__call__(
+    await PollCreationMessageInnerMiddleware().__call__(
         handler=_crete_poll_handler_coro,
         event=message,
         data={

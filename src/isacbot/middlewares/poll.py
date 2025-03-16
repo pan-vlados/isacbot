@@ -28,8 +28,8 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
-class PollCreationMessageOuterMiddleware(BaseMiddleware):
-    """Outer middleware for all messages allows to verify it's a poll
+class PollCreationMessageInnerMiddleware(BaseMiddleware):
+    """Inner middleware for all messages allows to verify it's a poll
     day or not and check if the poll exists in the database.
 
     Since this middleware is bound to a "Message", it affects all such

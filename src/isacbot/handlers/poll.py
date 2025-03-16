@@ -18,7 +18,7 @@ from isacbot.extensions import i18n
 from isacbot.filters import CreatePollCommandFilter, IsAdminFilter
 from isacbot.middlewares import (
     PollAnswerOuterMiddleware,
-    PollCreationMessageOuterMiddleware,
+    PollCreationMessageInnerMiddleware,
     SwapUserStateFromPrivateChatOuterMiddleware,
 )
 from isacbot.states import PollState
@@ -42,7 +42,7 @@ router.poll_answer.outer_middleware(PollAnswerOuterMiddleware())
 router.poll_answer.outer_middleware(
     SwapUserStateFromPrivateChatOuterMiddleware()
 )  # Allow to use information about authorization for specific user from private chat
-router.message.outer_middleware(PollCreationMessageOuterMiddleware())
+router.message.middleware(PollCreationMessageInnerMiddleware())
 
 
 _POLL_OPTIONS: 'Mapping[int, PollOptions]' = dict(enumerate(PollOptions))

@@ -5,7 +5,6 @@ from sqlalchemy.dialects import sqlite
 from sqlalchemy.ext.asyncio import AsyncAttrs
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
-from isacbot.config import BOT_TIMEZONE
 from isacbot.database.utils import (
     BigIntpk,
     Datestamp,
@@ -64,6 +63,6 @@ class PollAnswers(BaseMixin, Base):
             index_elements=[cls.user_id.key, cls.poll_id.key],
             set_={
                 cls.answer.key: ins_stmt.excluded.answer,
-                cls.updated_at.key: datetime.datetime.now(tz=BOT_TIMEZONE),
+                cls.updated_at.key: datetime.datetime.now(tz=datetime.UTC),
             },  # if we don't define this key it will not trigger onupdate function for `updated_at` column
         )

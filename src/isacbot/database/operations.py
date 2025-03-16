@@ -4,12 +4,14 @@ from typing import TYPE_CHECKING, NotRequired, TypedDict, Unpack
 
 import sqlalchemy as sa
 
+from isacbot.config import BOT_TIMEZONE
 from isacbot.database.models import Poll, PollAnswers, User
 from isacbot.database.utils import (
     BigIntpk,
     Datestamp,
     PollOptionsType,
     PollStatus,
+    get_timezone_aware_date,
     str_255,
 )
 from isacbot.errors import IntegrityError, NoResultFound, SQLAlchemyError
@@ -135,7 +137,8 @@ async def update_poll_status(poll_id: BigIntpk, status: PollStatus) -> None:
 
 
 _PollAnswersLabel_created_at = sa.Label(
-    name='aswered_at', element=sa.func.DATE(PollAnswers.created_at)
+    name='aswered_at',
+    element=get_timezone_aware_date(attribute=PollAnswers.created_at, tz=BOT_TIMEZONE),
 )  # there is no cast() funcion for sqlite [see](https://github.com/sqlalchemy/sqlalchemy/issues/5104).
 
 

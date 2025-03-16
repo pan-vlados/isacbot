@@ -20,7 +20,7 @@ from isacbot.states import UserState
 
 
 if TYPE_CHECKING:
-    from collections.abc import Collection, Mapping
+    from collections.abc import Collection
 
     from aiogram import Bot
     from aiogram.types import Chat
@@ -56,8 +56,8 @@ class IsAdminFilter(BaseFilter):
     There are two ways of use:
         1. `IsAdminFilter.user_is_administrator` - return `bool`,
         static check in set of admins
-        2. `IsAdminFilter.__call__(...)` - provide `is_admin` argument
-        into handler if check was successful.
+        2. `IsAdminFilter.__call__(...)` - statick check in set of
+        admins and dynamic check for member rights in chat.
     """
 
     @staticmethod
@@ -74,7 +74,7 @@ class IsAdminFilter(BaseFilter):
         bot: 'Bot',
         user_id: int,
         admins: 'AdminsSetType',
-    ) -> 'Mapping[Literal["is_admin"], bool] | Literal[False]':
+    ) -> bool:
         chat: Chat
         if isinstance(event, Message | ChatMemberUpdated):
             chat = event.chat
@@ -83,11 +83,9 @@ class IsAdminFilter(BaseFilter):
         else:
             return False
 
-        return {
-            'is_admin': await self.user_is_administrator(
-                bot=bot, chat_id=chat.id, user_id=user_id, admins=admins
-            )
-        }
+        return await self.user_is_administrator(
+            bot=bot, chat_id=chat.id, user_id=user_id, admins=admins
+        )
 
 
 class ChatMemberFilter(BaseFilter):
