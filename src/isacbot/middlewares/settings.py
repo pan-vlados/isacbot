@@ -7,7 +7,7 @@ from aiogram.types import CallbackQuery, Message
 if TYPE_CHECKING:
     from collections.abc import Awaitable, Callable
 
-    from isacbot.types_ import UserContext
+    from isacbot._typing import UserContext
 
 
 class SettingsCallbackQueryMiddleware(BaseMiddleware):

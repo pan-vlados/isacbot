@@ -14,7 +14,7 @@ from isacbot.filters import IsAdminFilter
 if TYPE_CHECKING:
     from aiogram.types import ChatMemberUpdated, Message
 
-    from isacbot.types_ import AdminsSetType
+    from isacbot._typing import AdminsSetType
 
 
 logger = logging.getLogger(name=__name__)

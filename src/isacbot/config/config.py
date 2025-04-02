@@ -12,7 +12,7 @@ from dotenv import find_dotenv, load_dotenv
 if TYPE_CHECKING:
     from collections.abc import Mapping
 
-    from isacbot.types_ import AdminsSetType
+    from isacbot._typing import AdminsSetType
 
 
 class _LogColour(enum.StrEnum):
@@ -97,5 +97,6 @@ POLL_DEFAULT_CLOSE_DELAY: Final[int] = int(getenv('POLL_DEFAULT_CLOSE_DELAY') or
 SMTP_MAIL: Final[str] = getenv('SMTP_MAIL', '')
 SMTP_PASSWORD: Final[str] = getenv('SMTP_PASSWORD', '')
 SMTP_HOSTNAME: Final[str] = getenv('SMTP_HOSTNAME', '')
+REDIS_PASSWORD: Final[str] = getenv('REDIS_PASSWORD', '')
 BOT_LANG_LOCALES_PATH: Final[Path] = Path(__file__).absolute().parent.parent / 'locales'
 BOT_LANG_LOCAL_DEFUALT: Final = getenv('BOT_LANG_LOCAL_DEFUALT', 'en')

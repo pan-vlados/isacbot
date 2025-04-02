@@ -25,7 +25,7 @@ if TYPE_CHECKING:
     from aiogram import Bot
     from aiogram.types import Chat
 
-    from isacbot.types_ import AdminsSetType
+    from isacbot._typing import AdminsSetType
 
 
 logger = logging.getLogger(__name__)

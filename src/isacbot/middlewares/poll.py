@@ -97,8 +97,7 @@ class PollCreationMessageInnerMiddleware(BaseMiddleware):
             return await handler(event, data)
 
         poll_date: Final[datetime.date] = event.date.astimezone(tz=BOT_TIMEZONE).date()
-        poll_context: PollContext = data['poll_context']
-        if (await poll_context.get_state()) or (await poll_already_exist(date=poll_date)):
+        if await poll_already_exist(date=poll_date):
             logger.debug('Poll already exist.')
             await event.answer(
                 text=i18n.gettext(N_('⚠️ Опрос на дату {poll_date} уже сформирован.')).format(

@@ -23,7 +23,7 @@ if TYPE_CHECKING:
 
     from aiogram.fsm.storage.base import BaseStorage
 
-    from isacbot.types_ import cache
+    from isacbot._typing import cache
 else:
     from functools import cache
 

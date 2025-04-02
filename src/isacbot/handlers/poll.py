@@ -32,8 +32,8 @@ if TYPE_CHECKING:
     from aiogram import Bot
     from aiogram.types import PollAnswer
 
+    from isacbot._typing import UserContext
     from isacbot.states import PollContext
-    from isacbot.types_ import UserContext
 
 
 logger = logging.getLogger(name=__name__)
@@ -48,8 +48,9 @@ router.message.middleware(PollCreationMessageInnerMiddleware())
 _POLL_OPTIONS: 'Mapping[int, PollOptions]' = dict(enumerate(PollOptions))
 
 
-# The following event represent end ot the poll when is set:
+# The following events represent the poll end and poll unpinned status when set:
 _POLL_END = asyncio.Event()
+_POLL_UNPINNED = asyncio.Event()
 
 
 async def _SET_POLL_END() -> None:  # noqa: N802
@@ -119,8 +120,13 @@ async def crete_poll_handler(
     await _POLL_END.wait()
     await stop_poll(pinned_message=message, bot=bot)
     logger.info('Poll finished.')
-    await poll_context.set_state(PollState.COMPLETED)
     await update_poll_status(poll_id=poll_id, status=PollStatus.COMPLETED)
+    # Wait until the poll is unpinned, then clear both events.
+    await _POLL_UNPINNED.wait()
+    _POLL_END.clear()
+    _POLL_UNPINNED.clear()
+
+    await poll_context.clear()
 
 
 @router.message(
@@ -139,6 +145,7 @@ async def pin_handler(message: Message, bot: 'Bot') -> None:
     await _POLL_END.wait()  # wait until end of the poll
     await unpin_poll(pinned_message=message.pinned_message, bot=bot)
     logger.info('Poll unpinned.')
+    _POLL_UNPINNED.set()
 
 
 @router.poll_answer()

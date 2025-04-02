@@ -24,7 +24,7 @@ if TYPE_CHECKING:
     from aiogram import Bot
     from aiogram.types import Message, User
 
-    from isacbot.types_ import AdminsSetType, UserContext
+    from isacbot._typing import AdminsSetType, UserContext
 
 
 logger = logging.getLogger(name=__name__)

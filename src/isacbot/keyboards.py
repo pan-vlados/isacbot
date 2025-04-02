@@ -25,8 +25,8 @@ if TYPE_CHECKING:
 
     from sqlalchemy import Row
 
+    from isacbot._typing import cache
     from isacbot.database.utils import BigIntpk, Datestamp
-    from isacbot.types_ import cache
 
     # ruff: noqa: ARG001
 else:

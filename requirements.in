@@ -11,3 +11,4 @@ aiosmtplib
 openpyxl
 babel
 APScheduler
+redis

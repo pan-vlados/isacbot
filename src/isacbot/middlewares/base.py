@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 
     from aiogram.types import TelegramObject
 
-    from isacbot.types_ import UserContext
+    from isacbot._typing import UserContext
 
 
 logger = logging.getLogger(__name__)

@@ -39,7 +39,7 @@ if TYPE_CHECKING:
     from aiogram import Bot
     from aiogram.types import CallbackQuery, Message
 
-    from isacbot.types_ import AdminsSetType, UserContext
+    from isacbot._typing import AdminsSetType, UserContext
 
     # ruff: noqa: ARG001
 

@@ -32,8 +32,8 @@ if TYPE_CHECKING:
     from aiogram import Bot
     from aiogram.types import CallbackQuery
 
+    from isacbot._typing import AdminsSetType, UserContext, UserStateDataMapping
     from isacbot.database.operations import UserUpdateMapping
-    from isacbot.types_ import AdminsSetType, UserContext, UserStateDataMapping
 
     # ruff: noqa: ARG001
 

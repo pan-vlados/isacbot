@@ -52,6 +52,7 @@ async def add_admins_from_main_chat() -> None:
 async def start_scheduler() -> None:
     scheduler.start()
     scheduler.add_job(  # Add poll creation on every Monday an 8:00
+        id='main_chat_poll_every_monday_id',
         name='main_chat_poll_every_monday',
         replace_existing=True,
         misfire_grace_time=None,
