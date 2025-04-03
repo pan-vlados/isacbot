@@ -97,9 +97,20 @@ async def crete_poll_handler(
         chat_id=message.chat.id,
     )
     poll_id = int(message.poll.id)
-    await create_poll(
-        poll_id=poll_id, question=question, date=poll_date, status=PollStatus.STARTED
-    )  # create poll in database
+
+    # Create poll in database and check if it was created.
+    if not (
+        await create_poll(
+            poll_id=poll_id, question=question, date=poll_date, status=PollStatus.STARTED
+        )
+    ):
+        await bot.delete_message(
+            chat_id=message.chat.id,
+            message_id=message.message_id,
+        )
+        logger.debug('Poll has not been created in the database.')
+        return
+
     await poll_context.set_state(PollState.STARTED)
     # Pin message and context for the poll.
     if await message.pin(disable_notification=False):
@@ -111,7 +122,7 @@ async def crete_poll_handler(
         # the pinned message with the corresponding FSM state. This manually created
         # `StorageKey` placed inside `poll_context` variable and initialized before handler.
         await poll_context.set_state(PollState.STARTED_AND_PINNED)
-    await poll_context.update_data(poll_message=message)
+    await poll_context.update_data(poll_message=message.model_dump_json())
 
     await create_delayed_background_task(task=_SET_POLL_END, delay=poll_close_delay)
     logger.info('Poll started.')

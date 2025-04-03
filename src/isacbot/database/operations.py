@@ -116,7 +116,7 @@ async def add_answer(user_id: BigIntpk, poll_id: BigIntpk, answer: PollOptionsTy
 
 async def create_poll(
     poll_id: BigIntpk, question: str_255, date: Datestamp, status: PollStatus
-) -> None:
+) -> bool:
     poll = Poll(id=poll_id, question=question, date=date, status=status.name)
     async with db.session.begin() as session:
         try:
@@ -129,6 +129,9 @@ async def create_poll(
                 'Error while trying to create pool_id=%d fon the %s.'
                 % (poll_id, date.strftime('%d.%m.%Y'))
             )
+        else:
+            return True
+    return False
 
 
 async def update_poll_status(poll_id: BigIntpk, status: PollStatus) -> None:

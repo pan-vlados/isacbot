@@ -1,0 +1,59 @@
+services:
+  isacbot:
+    platform: "linux/amd64"
+    container_name: isacbot_container
+    working_dir: /usr/src/isacbot
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - PYTHON_VERSION=3.12.8
+        - INSTANCE_VOLUME=/usr/src/isacbot/instance
+    image: panvlados/isacbot:latest
+    pull_policy: never
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 512M
+        reservations:
+          cpus: "0.5"
+          memory: 256M
+    env_file:
+      - src/isacbot/config/.env.prd
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD:?REDIS_PASSWORD environment variable is not set}
+    volumes:
+      - instance:/usr/src/isacbot/instance:rw
+    depends_on:
+      valkey:
+        condition: service_healthy
+    networks:
+      - app-network
+
+  valkey:
+    image: valkey/valkey
+    pull_policy: missing
+    container_name: valkey
+    restart: unless-stopped
+    volumes:
+      - valkey-data:/data:rw
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD:?REDIS_PASSWORD environment variable is not set}
+    command: /bin/sh -c "/usr/local/bin/valkey-server --requirepass $${REDIS_PASSWORD:?REDIS_PASSWORD environment variable is not set}"
+    healthcheck:
+      test: ["CMD", "valkey-cli", "ping"]
+      interval: 1m30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - app-network
+
+volumes:
+  valkey-data:
+  instance:
+networks:
+  app-network:
+    driver: bridge

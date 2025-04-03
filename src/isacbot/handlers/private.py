@@ -8,7 +8,7 @@ from aiogram.filters import Command
 from aiogram.filters.chat_member_updated import IS_MEMBER, IS_NOT_MEMBER, ChatMemberUpdatedFilter
 
 from isacbot.commands import ISACBotCommand
-from isacbot.filters import IsAdminFilter
+from isacbot.config import BOT_OWNER_ID
 
 
 if TYPE_CHECKING:
@@ -41,7 +41,7 @@ async def user_unblocked_bot_handler(event: 'ChatMemberUpdated') -> None:
         PRIVATE_USERS.add(event.from_user.id)
 
 
-@router.message(Command(ISACBotCommand.ADMINS), IsAdminFilter())
+@router.message(Command(ISACBotCommand.ADMINS), F.from_user.id == BOT_OWNER_ID)
 async def admins_handler(message: 'Message', admins: 'AdminsSetType') -> None:
     await message.answer(
         text='\n'.join(

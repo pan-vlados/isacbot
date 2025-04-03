@@ -64,7 +64,7 @@ async def start_scheduler() -> None:
 
 async def start_bot() -> None:
     await set_commands()
-    await add_admins_from_main_chat()  # TODO: collect all admins in all chats and update in db
+    await add_admins_from_main_chat()
     await start_scheduler()
     await send_message(
         bot=bot,
@@ -74,7 +74,6 @@ async def start_bot() -> None:
 
 
 async def stop_bot() -> None:
-    # TODO: save all admins
     await send_message(
         bot=bot,
         chat_id=BOT_OWNER_ID,

@@ -1,12 +1,12 @@
-import asyncio
 import datetime
 import logging
-from typing import TYPE_CHECKING, Final
+from typing import TYPE_CHECKING
 
 import pandas as pd
 from aiogram import F, Router, html
 from aiogram.enums import ChatType
 from aiogram.filters import CommandStart
+from aiogram.types import Message
 from aiogram.utils.i18n import gettext as _
 
 from isacbot.callbacks import (
@@ -37,9 +37,9 @@ from isacbot.states import UserState
 
 if TYPE_CHECKING:
     from aiogram import Bot
-    from aiogram.types import CallbackQuery, Message
+    from aiogram.types import CallbackQuery
 
-    from isacbot._typing import AdminsSetType, UserContext
+    from isacbot._typing import AdminsSetType, JSONSerializable, UserContext
 
     # ruff: noqa: ARG001
 
@@ -48,9 +48,6 @@ logger = logging.getLogger(name=__name__)
 router = Router(name=__name__)
 router.message.filter(F.chat.type == ChatType.PRIVATE, ChatMemberFilter())
 router.callback_query.middleware(CallbackMessageProviderMiddleware())
-
-
-MAX_DIALOUGE_DEEP: Final = 2  # the value corresponds to the maximum dialogue deep with user
 
 
 @router.message(CommandStart())
@@ -81,8 +78,8 @@ async def start_handler(
 
     await state.update_data(
         first_message_id=message.message_id,
-        message_queue=asyncio.LifoQueue(maxsize=MAX_DIALOUGE_DEEP),  # deep of the dialogue
-        callback_called_once=asyncio.Event(),  # this flag is used later
+        message_queue=[],
+        callback_called_once=False,  # this flag is used later
     )
     await state.set_state(UserState.AUTHORIZED)
 
@@ -115,7 +112,7 @@ async def create_poll_callback_handler(callback: 'CallbackQuery') -> None:
 async def send_poll_result_callback_handler(
     callback: 'CallbackQuery', state: 'UserContext', callback_message: 'Message'
 ) -> None:
-    polls = await get_poll_data()  # TODO: can be cached by day
+    polls = await get_poll_data()
     if not polls:
         await callback.answer(
             text=_('Опросы не найдены.'),
@@ -123,9 +120,13 @@ async def send_poll_result_callback_handler(
         )
         return
 
-    if not (message_queue := await state.get_value('message_queue')):
+    if (
+        message_queue := await state.get_value('message_queue')
+    ) is None:  # Value can be None or list, the first case isn't acceptable.
         return
-    message_queue.put_nowait(callback_message)
+
+    message_queue.append(callback_message.model_dump_json())
+    await state.update_data(message_queue=message_queue)
 
     await callback_message.edit_text(
         text=_('📆 Выберите дату опроса:'),
@@ -169,6 +170,7 @@ async def send_poll_date_chosen_callback_handler(
         poll_id=callback_data.poll_id,
         date=datetime.datetime.strptime(callback_data.date, '%d.%m.%Y').date(),  # noqa: DTZ007
     )
+
     attachment = pd.DataFrame(answers.all(), columns=[*answers.keys()])
     if attachment.empty:
         await callback.answer(
@@ -190,6 +192,8 @@ async def send_poll_date_chosen_callback_handler(
         return
 
     errors, response = await mail_client.send_message(message=message)
+    # TODO: here is SMTPAuthenticationError or some another error log and answer as a message
+    # aiosmtplib.errors.SMTPAuthenticationError: (535, '5.7.0 NEOBHODIM parol prilozheniya https://help.mail.ru/mail/security/protection/external / Application password is REQUIRED')
     if errors:
         logger.error(
             'Error while sending message to recipients:\n%s.'
@@ -225,11 +229,12 @@ async def back_callback_handler(
     callback: 'CallbackQuery', state: 'UserContext', callback_message: 'Message'
 ) -> None:
     """Handle all back button callbacks."""
-    message_queue: asyncio.LifoQueue | None = await state.get_value('message_queue')
-    if not message_queue:
+    message_queue: list[JSONSerializable] | None = await state.get_value('message_queue')
+    if not message_queue:  # Also check not only for the None value, but also for an empty list.
         return
 
-    last_message: Message = message_queue.get_nowait()
+    last_message: Message = Message.model_validate_json(message_queue.pop())
+    await state.update_data(message_queue=message_queue)
     if not (text := last_message.text):
         return
 

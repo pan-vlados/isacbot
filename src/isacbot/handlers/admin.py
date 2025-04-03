@@ -9,7 +9,7 @@ import enum
 import logging
 from typing import TYPE_CHECKING
 
-from aiogram import F, Router, html
+from aiogram import Router, html
 from aiogram.filters import Command
 from aiogram.utils.i18n import gettext as _
 
@@ -19,6 +19,7 @@ from isacbot.filters import (
     ChatMemberDemotedFilter,
     ChatMemberPromotedFilter,
     ChatTypeIsGroupFilter,
+    IsAdminFilter,
 )
 from isacbot.utils import send_message
 
@@ -121,7 +122,7 @@ async def admin_demoted_handler(
     )
 
 
-@router.message(Command(ISACBotCommand.FETCH_ADMINS), F.from_user.id == BOT_OWNER_ID)
+@router.message(Command(ISACBotCommand.FETCH_ADMINS), IsAdminFilter())
 async def fetch_admins_handler(message: 'Message', bot: 'Bot', admins: 'AdminsSetType') -> None:
     """Get administrators in the open chat where the command was posted."""
     fetched_admins = await bot.get_chat_administrators(chat_id=message.chat.id)

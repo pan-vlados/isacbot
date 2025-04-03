@@ -20,7 +20,6 @@ pyproject.toml
 requirements-dev.txt
 .ruff_cache
 .mypy_cache
-_main.py
 *.in
 *.md
 **/*.db

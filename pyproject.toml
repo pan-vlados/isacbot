@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "isacbot"
-version = "1.0.2post3"
+version = "1.0.3"
 authors = [
   {name = "Anisimov Vladislav", email = "pan.vlados.w@gmail.com" },
 ]

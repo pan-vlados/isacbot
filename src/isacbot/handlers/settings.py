@@ -1,10 +1,9 @@
-import asyncio
 import logging
 from typing import TYPE_CHECKING, Final
 
 from aiogram import F, Router, html
 from aiogram.enums import ChatType
-from aiogram.types import Message
+from aiogram.types import CallbackQuery, Message
 from aiogram.utils.i18n import gettext as _
 
 from isacbot.callbacks import (
@@ -30,9 +29,8 @@ from isacbot.states import UserState
 
 if TYPE_CHECKING:
     from aiogram import Bot
-    from aiogram.types import CallbackQuery
 
-    from isacbot._typing import AdminsSetType, UserContext, UserStateDataMapping
+    from isacbot._typing import AdminsSetType, JSONSerializable, UserContext, UserStateDataMapping
     from isacbot.database.operations import UserUpdateMapping
 
     # ruff: noqa: ARG001
@@ -51,10 +49,12 @@ _MAX_DISPLAYNAME_LEN: Final = 255
 async def settings_callback_handler(
     callback: 'CallbackQuery',
     message: 'Message',
-    message_queue: asyncio.LifoQueue['Message'],
+    state: 'UserContext',
+    message_queue: list['JSONSerializable'],
     language_code: str,
 ) -> None:
-    message_queue.put_nowait(message)
+    message_queue.append(message.model_dump_json())
+    await state.update_data(message_queue=message_queue)
     await message.edit_text(
         text=_('⚙️ <b>Выберите доступные настройки:</b>'),
         reply_markup=settings_kb(language_code=language_code),
@@ -73,7 +73,7 @@ async def change_settings_handler(
     state: 'UserContext',
     callback_data: SettingsCallback,
     user_id: int,
-    message_queue: asyncio.LifoQueue['Message'],
+    message_queue: list['JSONSerializable'],
     language_code: str,
 ) -> None:
     user = await get_user(user_id=user_id)
@@ -98,11 +98,12 @@ async def change_settings_handler(
                 else _('Email не установлен. Напишите новый email в сообщении ниже 📝👇')
             )
 
-    message_queue.put_nowait(message)
+    message_queue.append(message.model_dump_json())
     await state.set_state(UserState.SETTINGS_CHANGE_REQUESTED)
     await state.update_data(
         action=callback_data.action,
-        callback=callback,
+        callback=callback.model_dump_json(),
+        message_queue=message_queue,
     )
 
     await message.edit_text(
@@ -143,6 +144,7 @@ async def change_settings_response_handler(
 
     if not (callback_query := user_state_data.get('callback')):
         return
+    callback_query = CallbackQuery.model_validate_json(callback_query)
 
     if not update_kwargs:
         # Show error popup for callback message once. If the error occurs two times in a row,
@@ -150,14 +152,15 @@ async def change_settings_response_handler(
         # otherwise the following error will occur:
         # aiogram.exceptions.TelegramBadRequest: Telegram server says - Bad Request: query is too old and response timeout expired or query ID is invalid
         callback_called_once = user_state_data.get('callback_called_once')
-        if not callback_called_once:
+        if callback_called_once is None:
             return
-        if callback_called_once.is_set():
+        if callback_called_once:
             await message.answer(text=asnwer_text)
             return
 
         try:
-            await callback_query.answer(
+            await bot.answer_callback_query(
+                callback_query_id=callback_query.id,
                 text=asnwer_text,
                 show_alert=True,
             )
@@ -170,7 +173,7 @@ async def change_settings_response_handler(
             )
 
         await message.delete()  # do not show an invalid attempt if a warning was shown
-        callback_called_once.set()
+        await state.update_data(callback_called_once=True)
         return
 
     if not await update_user(
@@ -183,7 +186,8 @@ async def change_settings_response_handler(
         return
 
     try:
-        await callback_query.answer(
+        await bot.answer_callback_query(
+            callback_query_id=callback_query.id,
             text=asnwer_text,
             show_alert=True,
         )
@@ -195,7 +199,10 @@ async def change_settings_response_handler(
             text=asnwer_text,
         )
 
-    await callback_query.message.delete()
+    await bot.delete_message(
+        chat_id=callback_query.message.chat.id,
+        message_id=callback_query.message.message_id,
+    )
     await start.start_handler(
         message=message,
         bot=bot,

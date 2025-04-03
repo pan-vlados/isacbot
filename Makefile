@@ -124,6 +124,7 @@ docker-list-image-env:
 
 clean:
 	@find . -name __pycache__ -exec rm -rf {} +
+	@find src/$(package)/instance -name "*.db" -exec rm -rf {} +
 	@find src/$(package)/locales -name messages.mo -exec rm -rf {} +
 	@rm -rf src/$(package).egg-info
 	@rm -rf dist

@@ -1,7 +1,6 @@
 .DS_Store
 venv/
 __pycache__/
-_main.py
 .env.prd
 .env
 instance/

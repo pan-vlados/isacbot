@@ -23,7 +23,7 @@ class SettingsCallbackQueryMiddleware(BaseMiddleware):
             return None
 
         state: UserContext = data['state']
-        if not (message_queue := await state.get_value('message_queue')):
+        if (message_queue := await state.get_value('message_queue')) is None:
             return None
 
         data['message_queue'] = message_queue

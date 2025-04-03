@@ -18,6 +18,7 @@ Can demonstrate some **HOW TO's**:
 - use **APScheduler** for job scheduling;
 - use **GNU gettext** translation to achieve internationalization (**i18n**);
 - use **SMTP** to transfer poll result data.
+- use **[Valkey](https://valkey.io)** as a successor to Redis.
 
 
 # Usage
@@ -34,7 +35,7 @@ git clone https://github.com/pan-vlados/isacbot.git && cd isacbot
 ```
 Create and fill in environment variables in [.env.prd](src/isacbot/config/.env.prd) file (use your favorite editor instead of `vi` 🤓):
 ```bash
-cat src/isacbot/config/.env.dev > src/isacbot/config/.env.prd
+cat src/isacbot/config/.env.example > src/isacbot/config/.env.prd
 vi !$
 ```
 Create venv and install requirements:
@@ -45,10 +46,18 @@ Compile language [translations](/src/isacbot/locales/) (supports 🇷🇺/🇺�
 ```bash
 make i18n-compile
 ```
-Run and enjoy 🥳:
-```bash
-make run
-```
+Now you've got two options to run:
+1. **Makefile** (*Valkey preinstalled*):
+    ```bash
+    make run
+    ```
+2. **Docker compose** (*Valkey not installed*):
+    ```bash
+    export REDIS_PASSWORD="write here your password for Valkey database"
+    docker compose up
+    ```
+Run and enjoy 🥳
+
 
 ## Windows
 

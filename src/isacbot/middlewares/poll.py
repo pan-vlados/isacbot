@@ -24,6 +24,8 @@ if TYPE_CHECKING:
 
     from aiogram.types import User
 
+    from isacbot._typing import JSONSerializable
+
 
 logger = logging.getLogger(__name__)
 
@@ -148,14 +150,15 @@ class PollAnswerOuterMiddleware(BaseMiddleware):
             return None
 
         # Check the poll message provided.
-        poll_message: Message | None = poll_context_data.get('poll_message')
-        if not poll_message or not poll_message.poll:
-            logger.debug("Poll isn't created or user tried to answer an old poll.")
+        poll_message_json: JSONSerializable | None = poll_context_data.get('poll_message')
+        if not poll_message_json:
+            logger.debug("Poll isn't created.")
             return None
 
+        poll_message: Message = Message.model_validate_json(poll_message_json)
         # Check user response to an old poll.
-        if event.poll_id != poll_message.poll.id:
-            logger.debug('User answered an old poll.')
+        if not poll_message.poll or event.poll_id != poll_message.poll.id:
+            logger.debug('User tried to answer an old poll.')
             return None
 
         # This path can be reached when a user tries to withdraw their vote from
@@ -184,7 +187,10 @@ class PollAnswerOuterMiddleware(BaseMiddleware):
                 full_name=user.full_name,
             )
         if not db_user or not db_user.displayname:
-            await poll_message.answer(
+            await event.bot.send_message(
+                chat_id=poll_message.chat.id,
+                message_thread_id=poll_message.message_thread_id,
+                message_effect_id=poll_message.effect_id,
                 text=_(
                     '⚠️ Уважаемый(ая) {full_name}, для регистрации воспользуйтесь командой {command} в приватном чате со мной.'
                 ).format(
@@ -193,7 +199,7 @@ class PollAnswerOuterMiddleware(BaseMiddleware):
                         value='/start',
                         link=f'https://t.me/{(await event.bot.get_me()).username}?start=start',
                     ),
-                )
+                ),
             )
 
         logger.debug('Provided correct poll answer to handler.')
